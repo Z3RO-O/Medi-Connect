@@ -69,7 +69,7 @@ const DoctorContextProvider = (props) => {
 
     }
 
-    // Function to Mark appointment completed using API
+    // Function to Mark appointment accepted using API
     const completeAppointment = async (appointmentId) => {
 
         try {

@@ -67,7 +67,7 @@ const appointmentCancel = async (req, res) => {
 
 }
 
-// API to mark appointment completed for doctor panel
+// API to mark appointment accepted for doctor panel
 const appointmentComplete = async (req, res) => {
     try {
 
@@ -76,7 +76,7 @@ const appointmentComplete = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.docId === docId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { isCompleted: true })
-            return res.json({ success: true, message: 'Appointment Completed' })
+            return res.json({ success: true, message: 'Appointment Accepted' })
         }
 
         res.json({ success: false, message: 'Appointment Cancelled' })
