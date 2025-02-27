@@ -26,7 +26,7 @@ const Contact = () => {
             Tel: +91-7839271574 <br /> Email: bypassctf0.0@gmail.com
           </p>
           <p className=" font-semibold text-lg text-gray-600">
-            CAREERS AT PRESCRIPTO
+            CAREERS AT Medi Connect
           </p>
           <p className=" text-gray-500">
             Learn more about our teams and job openings.

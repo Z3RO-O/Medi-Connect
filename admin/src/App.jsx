@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { DoctorContext } from './context/DoctorContext';
 import { AdminContext } from './context/AdminContext';
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar'
@@ -20,18 +20,31 @@ const App = () => {
   const { dToken } = useContext(DoctorContext)
   const { aToken } = useContext(AdminContext)
 
-  return dToken || aToken ? (
+  return aToken ? (
     <div className='bg-[#F8F9FD]'>
       <ToastContainer />
       <Navbar />
       <div className='flex items-start'>
         <Sidebar />
         <Routes>
-          <Route path='/' element={<></>} />
+          {/* Default Route Redirect for Admin */}
+          <Route path='/' element={<Navigate to='/admin-dashboard' />} />
           <Route path='/admin-dashboard' element={<Dashboard />} />
           <Route path='/all-appointments' element={<AllAppointments />} />
           <Route path='/add-doctor' element={<AddDoctor />} />
           <Route path='/doctor-list' element={<DoctorsList />} />
+        </Routes>
+      </div>
+    </div>
+  ) : dToken ? (
+    <div className='bg-[#F8F9FD]'>
+      <ToastContainer />
+      <Navbar />
+      <div className='flex items-start'>
+        <Sidebar />
+        <Routes>
+          {/* Default Route Redirect for Doctor */}
+          <Route path='/' element={<Navigate to='/doctor-dashboard' />} />
           <Route path='/doctor-dashboard' element={<DoctorDashboard />} />
           <Route path='/doctor-appointments' element={<DoctorAppointments />} />
           <Route path='/doctor-profile' element={<DoctorProfile />} />
