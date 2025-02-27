@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { assets } from '../assets/assets'
+import { useContext } from 'react'
 import { DoctorContext } from '../context/DoctorContext'
 import { AdminContext } from '../context/AdminContext'
 import { useNavigate } from 'react-router-dom'
@@ -23,7 +22,7 @@ const Navbar = () => {
     <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white'>
       <div className='flex items-center gap-2 text-xs'>
         <p onClick={() => navigate('/')} className="font-semibold text-lg cursor-pointer">Medi Connect</p>
-        <p className='border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-600'>{aToken ? 'Admin' : 'Doctor'}</p>
+        <p className='border-2 px-2.5 py-0.5 rounded-full border-primary'>{aToken ? 'Admin' : 'Doctor'}</p>
       </div>
       <button onClick={() => logout()} className='bg-primary text-white text-sm px-10 py-2 rounded-full'>Logout</button>
     </div>

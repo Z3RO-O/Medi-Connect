@@ -36,11 +36,11 @@ const Navbar = () => {
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
         <NavLink
-          to={import.meta.env.VITE_ADMIN_DASHBOARD_URL}
+          to={import.meta.env.VITE_AD_DASHBOARD_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <li className="py-1">ADMIN</li>
+          <p className='border-2 px-2.5 py-0.5 rounded-full border-primary'>Admin/Doctor</p>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
       </ul>
