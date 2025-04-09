@@ -135,7 +135,7 @@ const bookAppointment = async (req, res) => {
 
     try {
 
-        const { userId, docId, slotDate, slotTime } = req.body
+        const { userId, docId, slotDate, slotTime, vitals } = req.body
         const docData = await doctorModel.findById(docId).select("-password")
 
         if (!docData.available) {
@@ -169,7 +169,8 @@ const bookAppointment = async (req, res) => {
             amount: docData.fees,
             slotTime,
             slotDate,
-            date: Date.now()
+            date: Date.now(),
+            vitals
         }
 
         const newAppointment = new appointmentModel(appointmentData)
