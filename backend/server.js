@@ -20,22 +20,20 @@ app.use(cors())
 let latestRealVitals = null;
 let lastUpdatedTime = Date.now();
 
+// Toggle mock data on/off
+const MOCK_ENABLED = false; // set to true to enable mock data
+
 // Generate realistic looking vital signs
 const generateRealisticVitals = () => {
-  // If we have real data that's recent (less than 30 seconds old), use it
+  // if real vitals exist and are recent, return them
   if (latestRealVitals && (Date.now() - lastUpdatedTime < 30000)) {
     return latestRealVitals;
   }
-  
-  // Otherwise generate realistic looking mock data
-  // Create small variations to make it look like real-time monitoring
-  const baseHeartRate = 72; // average resting heart rate
-  const baseSpo2 = 98;      // average SpO2
-  
-  // Generate slight variations for realistic effect
-  const heartRateVariation = Math.floor(Math.random() * 8) - 3; // -3 to +4 variation
-  const spo2Variation = Math.floor(Math.random() * 3) - 1;       // -1 to +1 variation
-  
+  // otherwise generate mock
+  const baseHeartRate = 72;
+  const baseSpo2 = 98;
+  const heartRateVariation = Math.floor(Math.random() * 8) - 3;
+  const spo2Variation = Math.floor(Math.random() * 3) - 1;
   return {
     bpm: Math.max(60, Math.min(100, baseHeartRate + heartRateVariation)).toString(),
     spo2: Math.max(95, Math.min(100, baseSpo2 + spo2Variation)).toString(),
@@ -52,46 +50,36 @@ app.get("/", (req, res) => {
   res.send("API Working")
 });
 
+// Receive vitals
 app.post('/data', (req, res) => {
   try {
     const { bpm, spo2 } = req.body;
-    
     if (!bpm || !spo2) {
       throw new Error("Missing required fields: bpm and spo2");
     }
-    
-    console.log(`📥 Real data received - BPM: ${bpm}, SpO2: ${spo2}`);
-    
-    // Store the latest real vitals
-    latestRealVitals = {
-      bpm,
-      spo2,
-      timestamp: Date.now()
-    };
+    spo2 = Math.max(0, Math.min(100, Number(spo2)));
+
+    console.log(`📥 Data received - BPM: ${bpm}, SpO2: ${spo2}`);
+    latestRealVitals = { bpm, spo2, timestamp: Date.now() };
     lastUpdatedTime = Date.now();
-    
-    res.status(200).json({
-      success: true,
-      message: "Data received successfully"
-    });
+    res.status(200).json({ success: true, message: "Data received successfully" });
   } catch (error) {
     console.error("Error processing vitals data:", error.message);
-    res.status(400).json({
-      success: false,
-      message: error.message
-    });
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
-// Endpoint to get the latest vitals - always returns something, 
-// real data if available, realistically mocked data if not
+// Endpoint to get the latest vitals
 app.get('/api/vitals/latest', (req, res) => {
-  const vitals = generateRealisticVitals();
-  
-  res.json({
-    success: true,
-    ...vitals
-  });
+  let vitals;
+  if (MOCK_ENABLED) {
+    vitals = generateRealisticVitals();
+  } else if (latestRealVitals) {
+    vitals = latestRealVitals;
+  } else {
+    return res.status(404).json({ success: false, message: 'No vitals data available' });
+  }
+  res.json({ success: true, ...vitals });
 });
 
 app.listen(port, () => console.log(`Server started on PORT:${port}`))
