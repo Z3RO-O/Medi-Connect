@@ -30,7 +30,7 @@ const generateRealisticVitals = () => {
     return latestRealVitals;
   }
   // otherwise generate mock
-  const baseHeartRate = 72;
+  const baseHeartRate = 82;
   const baseSpo2 = 98;
   const heartRateVariation = Math.floor(Math.random() * 8) - 3;
   const spo2Variation = Math.floor(Math.random() * 3) - 1;
@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 // Receive vitals
 app.post('/data', (req, res) => {
   try {
-    const { bpm, spo2 } = req.body;
+    let { bpm, spo2 } = req.body;
     if (!bpm || !spo2) {
       throw new Error("Missing required fields: bpm and spo2");
     }
