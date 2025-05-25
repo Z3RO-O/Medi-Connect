@@ -3,7 +3,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 
-export const DoctorContext = createContext()
+export const DoctorContext = createContext({})
 
 const DoctorContextProvider = (props) => {
 

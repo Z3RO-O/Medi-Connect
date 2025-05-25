@@ -3,9 +3,9 @@ import { createContext, useState } from "react";
 import { toast } from "react-toastify";
 
 
-export const AdminContext = createContext()
+export const AdminContext = createContext({})
 
-const AdminContextProvider = (props) => {
+const AdminContextProvider = (props: any) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
