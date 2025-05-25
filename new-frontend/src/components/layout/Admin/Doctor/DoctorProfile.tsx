@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { DoctorContext } from '@/context/DoctorContext';
 import { AppContext } from '@/context/DoctorAppContext';
 import type { IDoctorContext } from '@/models/doctor';
-import type { IDoctorAppContext } from '@/models/doctor';
+import type { IDoctorAppContext, DoctorProfile } from '@/models/doctor';
 
 const DoctorProfile = () => {
   const { dToken, profileData, setProfileData, getProfileData } = useContext(
@@ -15,6 +15,11 @@ const DoctorProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   const updateProfile = async () => {
+    if (!profileData) {
+      toast.error('Profile data not loaded.');
+      return;
+    }
+
     try {
       const updateData = {
         address: profileData.address,
@@ -93,10 +98,14 @@ const DoctorProfile = () => {
                 {isEdit ? (
                   <textarea
                     onChange={(e) =>
-                      setProfileData((prev: typeof profileData) => ({
-                        ...prev,
-                        about: e.target.value
-                      }))
+                      setProfileData((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              about: e.target.value
+                            }
+                          : null
+                      )
                     }
                     className="w-full outline-primary p-2"
                     rows={8}
@@ -116,10 +125,14 @@ const DoctorProfile = () => {
                   <input
                     type="number"
                     onChange={(e) =>
-                      setProfileData((prev: typeof profileData) => ({
-                        ...prev,
-                        fees: e.target.value
-                      }))
+                      setProfileData((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              fees: parseFloat(e.target.value)
+                            }
+                          : null
+                      )
                     }
                     value={profileData.fees}
                   />
@@ -136,10 +149,14 @@ const DoctorProfile = () => {
                   <input
                     type="text"
                     onChange={(e) =>
-                      setProfileData((prev: typeof profileData) => ({
-                        ...prev,
-                        address: { ...prev.address, line1: e.target.value }
-                      }))
+                      setProfileData((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              address: { ...prev.address, line1: e.target.value }
+                            }
+                          : null
+                      )
                     }
                     value={profileData.address.line1}
                   />
@@ -151,10 +168,14 @@ const DoctorProfile = () => {
                   <input
                     type="text"
                     onChange={(e) =>
-                      setProfileData((prev: typeof profileData) => ({
-                        ...prev,
-                        address: { ...prev.address, line2: e.target.value }
-                      }))
+                      setProfileData((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              address: { ...prev.address, line2: e.target.value }
+                            }
+                          : null
+                      )
                     }
                     value={profileData.address.line2}
                   />
@@ -169,10 +190,14 @@ const DoctorProfile = () => {
                 type="checkbox"
                 onChange={() =>
                   isEdit &&
-                  setProfileData((prev: typeof profileData) => ({
-                    ...prev,
-                    available: !prev.available
-                  }))
+                  setProfileData((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          available: !prev.available
+                        }
+                      : null
+                  )
                 }
                 checked={profileData.available}
               />
