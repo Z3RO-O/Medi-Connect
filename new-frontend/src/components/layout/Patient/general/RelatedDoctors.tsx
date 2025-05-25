@@ -1,17 +1,23 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '@/context/PatientAppContext'
+import type { IPatientAppContext, IDoctorPatient } from '@/models/patient'
 
-const RelatedDoctors = ({ speciality, docId }) => {
+interface RelatedDoctorsProps {
+  speciality: string;
+  docId: string | undefined;
+}
+
+const RelatedDoctors = ({ speciality, docId }: RelatedDoctorsProps) => {
 
     const navigate = useNavigate()
-    const { doctors } = useContext(AppContext)
+    const { doctors } = useContext(AppContext) as IPatientAppContext
 
-    const [relDoc, setRelDoc] = useState([])
+    const [relDoc, setRelDoc] = useState<IDoctorPatient[]>([])
 
     useEffect(() => {
         if (doctors.length > 0 && speciality) {
-            const doctorsData = doctors.filter((doc) => doc.speciality === speciality && doc._id !== docId)
+            const doctorsData = doctors.filter((doc: IDoctorPatient) => doc.speciality === speciality && doc._id !== docId)
             setRelDoc(doctorsData)
         }
     }, [doctors, speciality, docId])
@@ -21,7 +27,7 @@ const RelatedDoctors = ({ speciality, docId }) => {
             <h1 className='text-3xl font-medium'>Related Doctors</h1>
             <p className='sm:w-1/3 text-center text-sm'>Simply browse through our extensive list of trusted doctors.</p>
             <div className='w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0'>
-                {relDoc.map((item, index) => (
+                {relDoc.map((item: IDoctorPatient, index: number) => (
                     <div onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0) }} className='border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
                         <img className='bg-[#EAEFFF]' src={item.image} alt="" />
                         <div className='p-4'>

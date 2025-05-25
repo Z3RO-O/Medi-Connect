@@ -1,22 +1,32 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { AppContext } from '@/context/PatientAppContext'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+
+import { AppContext } from '@/context/PatientAppContext'
 import { assets } from '@/assets/assets'
+import type { IPatientAppContext } from '@/models/patient'
+import type { IAppointment } from '@/models/appointment'
+import type { RazorpayOptions, RazorpayResponse } from '@/models/payment'
+
+declare global {
+  interface Window {
+    Razorpay: new (options: RazorpayOptions) => { open: () => void };
+  }
+}
 
 const MyAppointments = () => {
 
-    const { backendUrl, token } = useContext(AppContext)
+    const { backendUrl, token } = useContext(AppContext) as IPatientAppContext
     const navigate = useNavigate()
 
-    const [appointments, setAppointments] = useState([])
-    const [payment, setPayment] = useState('')
+    const [appointments, setAppointments] = useState<IAppointment[]>([])
+    const [payment, setPayment] = useState<string>('')
 
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
-    const slotDateFormat = (slotDate) => {
+    const slotDateFormat = (slotDate: string) => {
         const dateArray = slotDate.split('_')
         return dateArray[0] + " " + months[Number(dateArray[1]) - 1] + " " + dateArray[2]
     }
@@ -28,14 +38,18 @@ const MyAppointments = () => {
             const { data } = await axios.get(backendUrl + '/api/user/appointments', { headers: { token } })
             setAppointments(data.appointments.reverse())
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
     }
 
     // Function to cancel appointment Using API
-    const cancelAppointment = async (appointmentId) => {
+    const cancelAppointment = async (appointmentId: string) => {
 
         try {
 
@@ -48,15 +62,19 @@ const MyAppointments = () => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
 
     }
 
-    const initPay = (order) => {
-        const options = {
+    const initPay = (order: { amount: number; currency: string; id: string; receipt: string }) => {
+        const options: RazorpayOptions = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: order.amount,
             currency: order.currency,
@@ -64,7 +82,7 @@ const MyAppointments = () => {
             description: "Appointment Payment",
             order_id: order.id,
             receipt: order.receipt,
-            handler: async (response) => {
+            handler: async (response: RazorpayResponse) => {
 
                 console.log(response)
 
@@ -74,9 +92,13 @@ const MyAppointments = () => {
                         navigate('/my-appointments')
                         getUserAppointments()
                     }
-                } catch (error) {
+                } catch (error: unknown) {
                     console.log(error)
-                    toast.error(error.message)
+                    if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                        toast.error((error as { message: string }).message)
+                    } else {
+                        toast.error('An error occurred')
+                    }
                 }
             }
         };
@@ -85,7 +107,7 @@ const MyAppointments = () => {
     };
 
     // Function to make payment using razorpay
-    const appointmentRazorpay = async (appointmentId) => {
+    const appointmentRazorpay = async (appointmentId: string) => {
         try {
             const { data } = await axios.post(backendUrl + '/api/user/payment-razorpay', { appointmentId }, { headers: { token } })
             if (data.success) {
@@ -93,14 +115,18 @@ const MyAppointments = () => {
             }else{
                 toast.error(data.message)
             }
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
     }
 
     // Function to make payment using stripe
-    const appointmentStripe = async (appointmentId) => {
+    const appointmentStripe = async (appointmentId: string) => {
         try {
             const { data } = await axios.post(backendUrl + '/api/user/payment-stripe', { appointmentId }, { headers: { token } })
             if (data.success) {
@@ -109,9 +135,13 @@ const MyAppointments = () => {
             }else{
                 toast.error(data.message)
             }
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
     }
 
@@ -127,7 +157,7 @@ const MyAppointments = () => {
         <div>
             <p className='pb-3 mt-12 text-lg font-medium text-gray-600 border-b'>My appointments</p>
             <div className=''>
-                {appointments.map((item, index) => (
+                {appointments.map((item: IAppointment, index: number) => (
                     <div key={index} className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b'>
                         <div>
                             <img className='w-36 bg-[#EAEFFF]' src={item.docData.image} alt="" />

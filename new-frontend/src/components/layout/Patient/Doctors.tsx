@@ -1,22 +1,24 @@
 import { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@/context/PatientAppContext'
 import { useNavigate, useParams } from 'react-router-dom'
+
+import { AppContext } from '@/context/PatientAppContext'
+import type { IPatientAppContext, IDoctorPatient } from '@/models/patient'
 
 const Doctors = () => {
 
   const { speciality } = useParams()
 
-  const [filterDoc, setFilterDoc] = useState([])
+  const [filterDoc, setFilterDoc] = useState<IDoctorPatient[]>([])
   const [showFilter, setShowFilter] = useState(false)
   const navigate = useNavigate();
 
-  const { doctors } = useContext(AppContext)
+  const { doctors } = useContext(AppContext) as IPatientAppContext
 
   const applyFilter = () => {
     if (speciality) {
-      setFilterDoc(doctors.filter(doc => doc.speciality === speciality))
+      setFilterDoc(doctors.filter((doc: IDoctorPatient) => doc.speciality === speciality))
     } else {
-      setFilterDoc(doctors)
+      setFilterDoc(doctors as IDoctorPatient[])
     }
   }
 
@@ -38,7 +40,7 @@ const Doctors = () => {
           <p onClick={() => speciality === 'Gastroenterologist' ? navigate('/doctors') : navigate('/doctors/Gastroenterologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality === 'Gastroenterologist' ? 'bg-[#E2E5FF] text-black ' : ''}`}>Gastroenterologist</p>
         </div>
         <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
-          {filterDoc.map((item, index) => (
+          {filterDoc.map((item: IDoctorPatient, index: number) => (
             <div onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0) }} className='border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
               <img className='bg-[#EAEFFF]' src={item.image} alt="" />
               <div className='p-4'>

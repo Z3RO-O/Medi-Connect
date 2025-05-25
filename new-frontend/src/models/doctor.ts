@@ -42,6 +42,25 @@ export interface IDoctorDashData {
   latestAppointments: IAppointment[];
 }
 
+export interface DoctorProfile {
+  _id: string;
+  name: string;
+  email: string;
+  image: string;
+  degree: string;
+  experience: string;
+  about: string;
+  fees: number;
+  address: {
+    line1: string;
+    line2: string;
+  };
+  available: boolean;
+  speciality: string;
+  phone?: string;
+  slots_booked?: Record<string, string[]>;
+}
+
 export interface IDoctorContext {
   dToken: string;
   setDToken: React.Dispatch<React.SetStateAction<string>>;
@@ -52,7 +71,7 @@ export interface IDoctorContext {
   completeAppointment: (appointmentId: string) => Promise<void>;
   dashData: IDoctorDashData | null;
   getDashData: () => Promise<void>;
-  profileData: any;
-  setProfileData: React.Dispatch<React.SetStateAction<any>>;
+  profileData: DoctorProfile | null;
+  setProfileData: React.Dispatch<React.SetStateAction<DoctorProfile | null>>;
   getProfileData: () => Promise<void>;
 }

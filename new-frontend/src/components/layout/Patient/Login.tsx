@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@/context/PatientAppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+
+import { AppContext } from '@/context/PatientAppContext'
+import type { IPatientAppContext } from '@/models/patient'
 
 const Login = () => {
 
@@ -13,9 +15,9 @@ const Login = () => {
   const [password, setPassword] = useState('')
 
   const navigate = useNavigate()
-  const { backendUrl, token, setToken } = useContext(AppContext)
+  const { backendUrl, token, setToken } = useContext(AppContext) as IPatientAppContext
 
-  const onSubmitHandler = async (event) => {
+  const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (state === 'Sign Up') {

@@ -4,9 +4,16 @@ export interface IUserData {
   dob: string;
 }
 
+export interface IDocAddress {
+  line1: string;
+  line2: string;
+}
+
 export interface IDocData {
   image: string;
   name: string;
+  speciality: string;
+  address: IDocAddress;
 }
 
 export interface IVitals {

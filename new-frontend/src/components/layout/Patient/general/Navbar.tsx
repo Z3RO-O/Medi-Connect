@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
-import { assets } from "@/assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
+
+import { assets } from "@/assets/assets";
 import { AppContext } from "@/context/PatientAppContext";
+import type { IPatientAppContext } from '@/models/patient'
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = useState(false);
-  const { token, setToken, userData } = useContext(AppContext);
+  const { token, setToken, userData } = useContext(AppContext) as IPatientAppContext;
 
   const logout = () => {
     localStorage.removeItem("token");
-    setToken(false);
+    setToken("");
     navigate("/login");
   };
 
