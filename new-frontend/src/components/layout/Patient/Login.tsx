@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-import { AppContext } from '@/context/PatientAppContext';
+import { AppContext } from '@/context/AppContext';
 import type { IPatientAppContext } from '@/models/patient';
 
 const Login = () => {

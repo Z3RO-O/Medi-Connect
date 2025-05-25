@@ -2,15 +2,16 @@ import { useContext, useEffect } from 'react';
 
 import { DoctorContext } from '@/context/DoctorContext';
 import { assets } from '@/assets/assets';
-import { AppContext } from '@/context/DoctorAppContext';
-import type { IDoctorContext, IDoctorAppContext } from '@/models/doctor';
+import { AppContext } from '@/context/AppContext';
+import type { IDoctorContext } from '@/models/doctor';
+import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 
 const DoctorDashboard = () => {
   const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(
     DoctorContext
   ) as IDoctorContext;
-  const { slotDateFormat, currency } = useContext(AppContext) as IDoctorAppContext;
+  const { slotDateFormat, currencySymbol } = useContext(AppContext) as IPatientAppContext;
 
   useEffect(() => {
     if (dToken) {
@@ -26,7 +27,7 @@ const DoctorDashboard = () => {
             <img className="w-14" src={assets.earning_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
-                {currency} {dashData.earnings}
+                {currencySymbol} {dashData.earnings}
               </p>
               <p className="text-gray-400">Earnings</p>
             </div>

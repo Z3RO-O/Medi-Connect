@@ -2,15 +2,16 @@ import { useEffect, useContext } from 'react';
 
 import { assets } from '@/assets/assets';
 import { AdminContext } from '@/context/AdminContext';
-import { AppContext } from '@/context/DoctorAppContext';
-import type { IAdminContext, IDoctorAppContext } from '@/models/doctor';
+import { AppContext } from '@/context/AppContext';
+import type { IAdminContext } from '@/models/doctor';
+import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 
 const AllAppointments = () => {
   const { aToken, appointments, cancelAppointment, getAllAppointments } = useContext(
     AdminContext
   ) as IAdminContext;
-  const { slotDateFormat, calculateAge, currency } = useContext(AppContext) as IDoctorAppContext;
+  const { slotDateFormat, calculateAge, currencySymbol } = useContext(AppContext) as IPatientAppContext;
 
   useEffect(() => {
     if (aToken) {
@@ -106,7 +107,7 @@ const AllAppointments = () => {
               )}
             </div>
             <p>
-              {currency}
+              {currencySymbol}
               {item.amount}
             </p>
             {item.cancelled ? (

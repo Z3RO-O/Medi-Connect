@@ -4,8 +4,9 @@ import { toast } from 'react-toastify';
 
 import { assets } from '@/assets/assets';
 import { AdminContext } from '@/context/AdminContext';
-import { AppContext } from '@/context/DoctorAppContext';
-import type { IAdminContext, IDoctorAppContext } from '@/models/doctor';
+import { AppContext } from '@/context/AppContext';
+import type { IAdminContext } from '@/models/doctor';
+import type { IPatientAppContext } from '@/models/patient';
 
 const AddDoctor = () => {
   const [docImg, setDocImg] = useState<File | null>(null);
@@ -20,7 +21,7 @@ const AddDoctor = () => {
   const [address1, setAddress1] = useState<string>('');
   const [address2, setAddress2] = useState<string>('');
 
-  const { backendUrl } = useContext(AppContext) as IDoctorAppContext;
+  const { backendUrl } = useContext(AppContext) as IPatientAppContext;
   const { aToken } = useContext(AdminContext) as IAdminContext;
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {

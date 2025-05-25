@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { AppContext } from '@/context/PatientAppContext';
+import { AppContext } from '@/context/AppContext';
 import { assets } from '@/assets/assets';
 import RelatedDoctors from '@/components/layout/Patient/general/RelatedDoctors';
 import type { IPatientAppContext, IDoctorPatient } from '@/models/patient';

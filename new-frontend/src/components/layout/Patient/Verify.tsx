@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { AppContext } from '@/context/PatientAppContext';
+import { AppContext } from '@/context/AppContext';
 import type { IPatientAppContext } from '@/models/patient';
 
 const Verify = () => {

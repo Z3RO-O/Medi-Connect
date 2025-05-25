@@ -36,4 +36,6 @@ export interface IPatientAppContext {
   doctors: IDoctorPatient[];
   currencySymbol: string;
   getDoctosData: () => Promise<void>;
+  slotDateFormat: (slotDate: string) => string;
+  calculateAge: (dob: string) => number;
 }

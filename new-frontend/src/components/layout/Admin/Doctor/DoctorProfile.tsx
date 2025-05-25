@@ -3,15 +3,16 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { DoctorContext } from '@/context/DoctorContext';
-import { AppContext } from '@/context/DoctorAppContext';
+import { AppContext } from '@/context/AppContext';
 import type { IDoctorContext } from '@/models/doctor';
-import type { IDoctorAppContext, DoctorProfile } from '@/models/doctor';
+import type { IPatientAppContext } from '@/models/patient';
 
 const DoctorProfile = () => {
   const { dToken, profileData, setProfileData, getProfileData } = useContext(
     DoctorContext
   ) as IDoctorContext;
-  const { currency, backendUrl } = useContext(AppContext) as IDoctorAppContext;
+  const { backendUrl } = useContext(AppContext) as IPatientAppContext;
+  const { currencySymbol } = useContext(AppContext) as IPatientAppContext;
   const [isEdit, setIsEdit] = useState(false);
 
   const updateProfile = async () => {
@@ -118,7 +119,7 @@ const DoctorProfile = () => {
             <p className="text-gray-600 font-medium mt-4">
               Appointment fee:{' '}
               <span className="text-gray-800">
-                {currency}{' '}
+                {currencySymbol}{' '}
                 {isEdit ? (
                   <input
                     type="number"

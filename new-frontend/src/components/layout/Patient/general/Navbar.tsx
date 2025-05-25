@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { assets } from '@/assets/assets';
-import { AppContext } from '@/context/PatientAppContext';
+import { AppContext } from '@/context/AppContext';
 import type { IPatientAppContext } from '@/models/patient';
 
 const Navbar = () => {

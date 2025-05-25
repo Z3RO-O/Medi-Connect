@@ -2,15 +2,16 @@ import { useContext, useEffect } from 'react';
 
 import { assets } from '@/assets/assets';
 import { AdminContext } from '@/context/AdminContext';
-import { AppContext } from '@/context/DoctorAppContext';
-import type { IAdminContext, IDoctorAppContext } from '@/models/doctor';
+import { AppContext } from '@/context/AppContext';
+import type { IAdminContext } from '@/models/doctor';
+import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 
 const Dashboard = () => {
   const { aToken, getDashData, cancelAppointment, dashData } = useContext(
     AdminContext
   ) as IAdminContext;
-  const { slotDateFormat } = useContext(AppContext) as IDoctorAppContext;
+  const { slotDateFormat } = useContext(AppContext) as IPatientAppContext;
 
   useEffect(() => {
     if (aToken) {

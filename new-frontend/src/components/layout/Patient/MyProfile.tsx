@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { assets } from '@/assets/assets';
-import { AppContext } from '@/context/PatientAppContext';
+import { AppContext } from '@/context/AppContext';
 import type { IPatientAppContext, IUserData } from '@/models/patient';
 
 const MyProfile = () => {

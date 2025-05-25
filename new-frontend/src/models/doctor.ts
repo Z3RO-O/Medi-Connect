@@ -28,13 +28,6 @@ export interface IAdminContext {
   dashData: IDashData | null;
 }
 
-export interface IDoctorAppContext {
-  backendUrl: string;
-  currency: string;
-  slotDateFormat: (slotDate: string) => string;
-  calculateAge: (dob: string) => number;
-}
-
 export interface IDoctorDashData {
   earnings: number;
   appointments: number;

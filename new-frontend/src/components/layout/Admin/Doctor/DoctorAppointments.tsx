@@ -1,15 +1,16 @@
 import { useContext, useEffect } from 'react';
 
 import { DoctorContext } from '@/context/DoctorContext';
-import { AppContext } from '@/context/DoctorAppContext';
+import { AppContext } from '@/context/AppContext';
 import { assets } from '@/assets/assets';
-import type { IDoctorContext, IDoctorAppContext } from '@/models/doctor';
+import type { IDoctorContext } from '@/models/doctor';
+import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 
 const DoctorAppointments = () => {
   const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } =
     useContext(DoctorContext) as IDoctorContext;
-  const { slotDateFormat, calculateAge, currency } = useContext(AppContext) as IDoctorAppContext;
+  const { slotDateFormat, calculateAge, currencySymbol } = useContext(AppContext) as IPatientAppContext;
 
   useEffect(() => {
     if (dToken) {
@@ -106,7 +107,7 @@ const DoctorAppointments = () => {
               )}
             </div>
             <p>
-              {currency}
+              {currencySymbol}
               {item.amount}
             </p>
             {item.cancelled ? (
