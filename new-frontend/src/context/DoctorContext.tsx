@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import type { IDoctorContext } from '@/models/doctor';
+import type { IDoctorContext, DoctorProfile } from '@/models/doctor';
 
 export const DoctorContext = createContext({} as IDoctorContext);
 
@@ -19,7 +19,7 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
   );
   const [appointments, setAppointments] = useState<IDoctorContext['appointments']>([]);
   const [dashData, setDashData] = useState<IDoctorContext['dashData']>(null);
-  const [profileData, setProfileData] = useState<unknown>(null);
+  const [profileData, setProfileData] = useState<DoctorProfile | null>(null);
 
   // Getting Doctor appointment data from Database using API
   const getAppointments = async () => {
