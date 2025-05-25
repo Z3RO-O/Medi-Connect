@@ -26,7 +26,7 @@ import MeetingPage from '@/components/layout/Meet/Meeting/[id]/page';
 
 // Admin components
 import AdminNavbar from '@/components/layout/Admin/Navbar';
-import AdminSidebar from '@/components/layout/Admin/Sidebar';
+import Sidebar from '@/components/layout/Admin/Sidebar';
 import Dashboard from '@/components/layout/Admin/Admin/Dashboard';
 import AllAppointments from '@/components/layout/Admin/Admin/AllAppointments';
 import AddDoctor from '@/components/layout/Admin/Admin/AddDoctor';
@@ -49,7 +49,7 @@ const App = () => {
         <ToastContainer />
         <AdminNavbar />
         <div className="flex items-start">
-          <AdminSidebar />
+          <Sidebar />
           <Routes>
             <Route path="/" element={<Navigate to="/admin-dashboard" />} />
             <Route path="/admin-dashboard" element={<Dashboard />} />
@@ -69,7 +69,7 @@ const App = () => {
         <ToastContainer />
         <AdminNavbar />
         <div className="flex items-start">
-          <AdminSidebar />
+          <Sidebar />
           <Routes>
             <Route path="/" element={<Navigate to="/doctor-dashboard" />} />
             <Route path="/doctor-dashboard" element={<DoctorDashboard />} />

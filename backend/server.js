@@ -1,21 +1,21 @@
-import express from "express"
-import cors from 'cors'
-import 'dotenv/config'
-import connectDB from "./config/mongodb.js"
-import connectCloudinary from "./config/cloudinary.js"
-import userRouter from "./routes/userRoute.js"
-import doctorRouter from "./routes/doctorRoute.js"
-import adminRouter from "./routes/adminRoute.js"
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
+import connectDB from './config/mongodb.js';
+import connectCloudinary from './config/cloudinary.js';
+import userRouter from './routes/userRoute.js';
+import doctorRouter from './routes/doctorRoute.js';
+import adminRouter from './routes/adminRoute.js';
 
 // app config
-const app = express()
-const port = process.env.PORT || 4000
-connectDB()
-connectCloudinary()
+const app = express();
+const port = process.env.PORT || 4000;
+connectDB();
+connectCloudinary();
 
 // middlewares
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 let latestRealVitals = null;
 let lastUpdatedTime = Date.now();
@@ -26,7 +26,7 @@ const MOCK_ENABLED = false; // set to true to enable mock data
 // Generate realistic looking vital signs
 const generateRealisticVitals = () => {
   // if real vitals exist and are recent, return them
-  if (latestRealVitals && (Date.now() - lastUpdatedTime < 30000)) {
+  if (latestRealVitals && Date.now() - lastUpdatedTime < 30000) {
     return latestRealVitals;
   }
   // otherwise generate mock
@@ -42,12 +42,12 @@ const generateRealisticVitals = () => {
 };
 
 // api endpoints
-app.use("/api/user", userRouter)
-app.use("/api/admin", adminRouter)
-app.use("/api/doctor", doctorRouter)
+app.use('/api/user', userRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/doctor', doctorRouter);
 
-app.get("/", (req, res) => {
-  res.send("API Working")
+app.get('/', (req, res) => {
+  res.send('API Working');
 });
 
 // Receive vitals
@@ -55,16 +55,16 @@ app.post('/data', (req, res) => {
   try {
     let { bpm, spo2 } = req.body;
     if (!bpm || !spo2) {
-      throw new Error("Missing required fields: bpm and spo2");
+      throw new Error('Missing required fields: bpm and spo2');
     }
     spo2 = Math.max(0, Math.min(100, Number(spo2)));
 
     console.log(`📥 Data received - BPM: ${bpm}, SpO2: ${spo2}`);
     latestRealVitals = { bpm, spo2, timestamp: Date.now() };
     lastUpdatedTime = Date.now();
-    res.status(200).json({ success: true, message: "Data received successfully" });
+    res.status(200).json({ success: true, message: 'Data received successfully' });
   } catch (error) {
-    console.error("Error processing vitals data:", error.message);
+    console.error('Error processing vitals data:', error.message);
     res.status(400).json({ success: false, message: error.message });
   }
 });
@@ -82,4 +82,4 @@ app.get('/api/vitals/latest', (req, res) => {
   res.json({ success: true, ...vitals });
 });
 
-app.listen(port, () => console.log(`Server started on PORT:${port}`))
+app.listen(port, () => console.log(`Server started on PORT:${port}`));
