@@ -1,7 +1,7 @@
-import Header from '@/components/layout/Patient/general/Header'
-import SpecialityMenu from '@/components/layout/Patient/general/SpecialityMenu'
-import TopDoctors from '@/components/layout/Patient/general/TopDoctors'
-import Banner from '@/components/layout/Patient/general/Banner'
+import Header from '@/components/layout/Patient/general/Header';
+import SpecialityMenu from '@/components/layout/Patient/general/SpecialityMenu';
+import TopDoctors from '@/components/layout/Patient/general/TopDoctors';
+import Banner from '@/components/layout/Patient/general/Banner';
 
 const Home = () => {
   return (
@@ -11,7 +11,7 @@ const Home = () => {
       <TopDoctors />
       <Banner />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

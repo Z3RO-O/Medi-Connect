@@ -1,48 +1,48 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CalendarIcon, Copy, Video } from "lucide-react"
-import { DatePicker } from "@/components/common/date-picker"
-import { TimePicker } from "@/components/common/time-picker"
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CalendarIcon, Copy, Video } from 'lucide-react';
+import { DatePicker } from '@/components/common/date-picker';
+import { TimePicker } from '@/components/common/time-picker';
 
 export default function NewMeetingPage() {
-  const navigate = useNavigate()
-  const [meetingCode, setMeetingCode] = useState("")
-  const [copied, setCopied] = useState(false)
-  const [meetingTitle, setMeetingTitle] = useState("")
+  const navigate = useNavigate();
+  const [meetingCode, setMeetingCode] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [meetingTitle, setMeetingTitle] = useState('');
 
   const generateMeetingCode = () => {
     // Generate a random 10-character alphanumeric code
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    let result = ""
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
     for (let i = 0; i < 10; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length))
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
-    setMeetingCode(result)
-    return result
-  }
+    setMeetingCode(result);
+    return result;
+  };
 
   const startInstantMeeting = () => {
-    const code = generateMeetingCode()
-    navigate(`/meeting/${code}`)
-  }
+    const code = generateMeetingCode();
+    navigate(`/meeting/${code}`);
+  };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(meetingCode)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText(meetingCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const scheduleMeeting = (e: React.FormEvent) => {
-    e.preventDefault()
-    const code = generateMeetingCode()
+    e.preventDefault();
+    const code = generateMeetingCode();
     // In a real app, you would save this to a database
-    alert(`Meeting "${meetingTitle}" scheduled with code: ${code}`)
-  }
+    alert(`Meeting "${meetingTitle}" scheduled with code: ${code}`);
+  };
 
   return (
     <div className="container max-w-4xl py-12">
@@ -65,7 +65,9 @@ export default function NewMeetingPage() {
           <Card>
             <CardHeader>
               <CardTitle>Start an Instant Meeting</CardTitle>
-              <CardDescription>Create a meeting and share the invite code with participants</CardDescription>
+              <CardDescription>
+                Create a meeting and share the invite code with participants
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
@@ -73,7 +75,9 @@ export default function NewMeetingPage() {
                   <Video className="h-4 w-4" />
                   Start Meeting Now
                 </Button>
-                <p className="text-sm text-muted-foreground">You'll get a shareable link after starting</p>
+                <p className="text-sm text-muted-foreground">
+                  You'll get a shareable link after starting
+                </p>
               </div>
 
               {meetingCode && (
@@ -148,5 +152,5 @@ export default function NewMeetingPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

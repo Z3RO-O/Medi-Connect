@@ -1,25 +1,34 @@
-import { Clock } from "lucide-react"
+import { Clock } from 'lucide-react';
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState } from "react"
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+import { useState } from 'react';
 
 export function TimePicker() {
-  const [selectedHour, setSelectedHour] = useState<string>("12")
-  const [selectedMinute, setSelectedMinute] = useState<string>("00")
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("PM")
+  const [selectedHour, setSelectedHour] = useState<string>('12');
+  const [selectedMinute, setSelectedMinute] = useState<string>('00');
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('PM');
 
-  const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, "0"))
-  const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, "0"))
+  const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+  const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
-          className={cn("w-full justify-start text-left font-normal", !selectedHour && "text-muted-foreground")}
+          variant={'outline'}
+          className={cn(
+            'w-full justify-start text-left font-normal',
+            !selectedHour && 'text-muted-foreground'
+          )}
         >
           <Clock className="mr-2 h-4 w-4" />
           {selectedHour && selectedMinute ? (
@@ -69,5 +78,5 @@ export function TimePicker() {
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

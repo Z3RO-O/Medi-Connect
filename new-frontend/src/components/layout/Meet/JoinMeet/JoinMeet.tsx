@@ -1,22 +1,22 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ArrowLeft } from "lucide-react"
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ArrowLeft } from 'lucide-react';
 
 export default function JoinMeetingPage() {
-  const navigate = useNavigate()
-  const [meetingCode, setMeetingCode] = useState("")
-  const [name, setName] = useState("")
+  const navigate = useNavigate();
+  const [meetingCode, setMeetingCode] = useState('');
+  const [name, setName] = useState('');
 
   const handleJoinMeeting = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (meetingCode.trim()) {
-      navigate(`/meeting/${meetingCode}?name=${encodeURIComponent(name)}`)
+      navigate(`/meeting/${meetingCode}?name=${encodeURIComponent(name)}`);
     }
-  }
+  };
 
   return (
     <div className="container flex max-w-md flex-col items-center justify-center py-12">
@@ -37,7 +37,13 @@ export default function JoinMeetingPage() {
           <form onSubmit={handleJoinMeeting} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Your Name</Label>
-              <Input id="name" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} required />
+              <Input
+                id="name"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="code">Meeting Code</Label>
@@ -56,5 +62,5 @@ export default function JoinMeetingPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

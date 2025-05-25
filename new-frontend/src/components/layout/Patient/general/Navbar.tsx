@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useContext, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-import { assets } from "@/assets/assets";
-import { AppContext } from "@/context/PatientAppContext";
-import type { IPatientAppContext } from '@/models/patient'
+import { assets } from '@/assets/assets';
+import { AppContext } from '@/context/PatientAppContext';
+import type { IPatientAppContext } from '@/models/patient';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -12,14 +12,16 @@ const Navbar = () => {
   const { token, setToken, userData } = useContext(AppContext) as IPatientAppContext;
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken("");
-    navigate("/login");
+    localStorage.removeItem('token');
+    setToken('');
+    navigate('/login');
   };
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD]">
-      <p onClick={() => navigate('/')} className="font-semibold text-lg cursor-pointer">Medi Connect</p>
+      <p onClick={() => navigate('/')} className="font-semibold text-lg cursor-pointer">
+        Medi Connect
+      </p>
       <ul className="md:flex items-start gap-5 font-medium hidden">
         <NavLink to="/">
           <li className="py-1">HOME</li>
@@ -42,7 +44,7 @@ const Navbar = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <p className='border-2 px-2.5 py-0.5 rounded-full border-primary'>Admin/Doctor</p>
+          <p className="border-2 px-2.5 py-0.5 rounded-full border-primary">Admin/Doctor</p>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
       </ul>
@@ -55,13 +57,13 @@ const Navbar = () => {
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="min-w-48 bg-gray-50 rounded flex flex-col gap-4 p-4">
                 <p
-                  onClick={() => navigate("/my-profile")}
+                  onClick={() => navigate('/my-profile')}
                   className="hover:text-black cursor-pointer"
                 >
                   My Profile
                 </p>
                 <p
-                  onClick={() => navigate("/my-appointments")}
+                  onClick={() => navigate('/my-appointments')}
                   className="hover:text-black cursor-pointer"
                 >
                   My Appointments
@@ -74,7 +76,7 @@ const Navbar = () => {
           </div>
         ) : (
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate('/login')}
             className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
           >
             Create account
@@ -90,7 +92,7 @@ const Navbar = () => {
         {/* ---- Mobile Menu ---- */}
         <div
           className={`md:hidden ${
-            showMenu ? "fixed w-full" : "h-0 w-0"
+            showMenu ? 'fixed w-full' : 'h-0 w-0'
           } right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
         >
           <div className="flex items-center justify-between px-5 py-6">

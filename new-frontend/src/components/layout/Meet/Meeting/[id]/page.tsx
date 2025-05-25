@@ -1,116 +1,118 @@
-import { useEffect, useRef, useState } from "react"
-import { useParams, useSearchParams } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Mic, MicOff, Monitor, Phone, Video, VideoOff } from "lucide-react"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useMobile } from "@/hooks/use-mobile"
+import { useEffect, useRef, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Mic, MicOff, Monitor, Phone, Video, VideoOff } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useMobile } from '@/hooks/use-mobile';
 
 export default function MeetingPage() {
-  const params = useParams()
-  const [searchParams] = useSearchParams()
-  const meetingId = params.id as string
-  const userName = searchParams.get("name") || "Guest"
+  const params = useParams();
+  const [searchParams] = useSearchParams();
+  const meetingId = params.id as string;
+  const userName = searchParams.get('name') || 'Guest';
 
-  const isMobile = useMobile()
-  const [isMicOn, setIsMicOn] = useState(true)
-  const [isVideoOn, setIsVideoOn] = useState(true)
+  const isMobile = useMobile();
+  const [isMicOn, setIsMicOn] = useState(true);
+  const [isVideoOn, setIsVideoOn] = useState(true);
   const [participants, setParticipants] = useState([
-    { id: "1", name: userName, isLocal: true },
-    { id: "2", name: "Sarah Johnson", isLocal: false },
-    { id: "3", name: "Michael Chen", isLocal: false },
-  ])
+    { id: '1', name: userName, isLocal: true },
+    { id: '2', name: 'Sarah Johnson', isLocal: false },
+    { id: '3', name: 'Michael Chen', isLocal: false }
+  ]);
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const localVideoRef = useRef<HTMLVideoElement>(null)
+  const localVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    let mediaStream: MediaStream | null = null
+    let mediaStream: MediaStream | null = null;
 
     const setupMedia = async () => {
       try {
         // First try to get just audio if video is off
         if (!isVideoOn) {
           if (isMicOn) {
-            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
           }
-          return
+          return;
         }
 
         // Try to get both video and audio
         try {
           mediaStream = await navigator.mediaDevices.getUserMedia({
             video: true,
-            audio: isMicOn,
-          })
+            audio: isMicOn
+          });
         } catch (videoErr) {
-          console.warn("Could not access camera:", videoErr)
+          console.warn('Could not access camera:', videoErr);
           // If video fails, fall back to audio only
-          setIsVideoOn(false)
+          setIsVideoOn(false);
           if (isMicOn) {
-            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
           }
         }
       } catch (err) {
-        console.error("Error accessing media devices:", err)
-        setErrorMessage("Could not access your camera or microphone. Please check your device permissions.")
-        setIsVideoOn(false)
+        console.error('Error accessing media devices:', err);
+        setErrorMessage(
+          'Could not access your camera or microphone. Please check your device permissions.'
+        );
+        setIsVideoOn(false);
         if (isMicOn) {
-          setIsMicOn(false)
+          setIsMicOn(false);
         }
       }
 
       // Apply the stream to the video element if we got one
       if (mediaStream && localVideoRef.current) {
-        localVideoRef.current.srcObject = mediaStream
+        localVideoRef.current.srcObject = mediaStream;
       }
-    }
+    };
 
-    setupMedia()
+    setupMedia();
 
     return () => {
       // Clean up media streams when component unmounts
       if (mediaStream) {
-        mediaStream.getTracks().forEach((track) => track.stop())
+        mediaStream.getTracks().forEach((track) => track.stop());
       }
-    }
-  }, [isVideoOn, isMicOn])
+    };
+  }, [isVideoOn, isMicOn]);
 
-  const toggleMic = () => setIsMicOn(!isMicOn)
+  const toggleMic = () => setIsMicOn(!isMicOn);
 
   const toggleVideo = async () => {
     if (!isVideoOn) {
       // When turning video on, check if we can access the camera first
       try {
-        await navigator.mediaDevices.getUserMedia({ video: true })
-        setIsVideoOn(true)
+        await navigator.mediaDevices.getUserMedia({ video: true });
+        setIsVideoOn(true);
       } catch (err) {
-        console.error("Could not access camera:", err)
-        alert("Could not access your camera. Please check your device permissions.")
+        console.error('Could not access camera:', err);
+        alert('Could not access your camera. Please check your device permissions.');
       }
     } else {
       // Just turn off video if it's currently on
-      setIsVideoOn(false)
+      setIsVideoOn(false);
     }
-  }
+  };
 
   const endCall = () => {
     // In a real app, you would disconnect from the WebRTC service here
-    window.location.href = "/"
-  }
+    window.location.href = '/';
+  };
 
   const shareScreen = () => {
     // In a real app, you would implement screen sharing here
-    alert("Screen sharing would be implemented here")
-  }
+    alert('Screen sharing would be implemented here');
+  };
 
   const copyMeetingLink = () => {
-    const link = `${window.location.origin}/meeting/${meetingId}`
-    navigator.clipboard.writeText(link)
-    alert("Meeting link copied to clipboard")
-  }
+    const link = `${window.location.origin}/meeting/${meetingId}`;
+    navigator.clipboard.writeText(link);
+    alert('Meeting link copied to clipboard');
+  };
 
   return (
     <div className="flex h-screen flex-col bg-slate-900">
@@ -133,7 +135,11 @@ export default function MeetingPage() {
         {errorMessage && (
           <div className="bg-red-500 p-2 text-center text-white">
             {errorMessage}
-            <Button variant="link" className="ml-2 text-white underline" onClick={() => setErrorMessage(null)}>
+            <Button
+              variant="link"
+              className="ml-2 text-white underline"
+              onClick={() => setErrorMessage(null)}
+            >
               Dismiss
             </Button>
           </div>
@@ -143,29 +149,43 @@ export default function MeetingPage() {
             <Card
               key={participant.id}
               className={`relative overflow-hidden ${
-                participants.length <= 2 ? "h-[60vh] w-[80%]" : isMobile ? "h-[30vh] w-full" : "h-[40vh] w-[45%]"
+                participants.length <= 2
+                  ? 'h-[60vh] w-[80%]'
+                  : isMobile
+                    ? 'h-[30vh] w-full'
+                    : 'h-[40vh] w-[45%]'
               } bg-slate-800`}
             >
               {participant.isLocal ? (
                 isVideoOn ? (
-                  <video ref={localVideoRef} autoPlay muted playsInline className="h-full w-full object-cover" />
+                  <video
+                    ref={localVideoRef}
+                    autoPlay
+                    muted
+                    playsInline
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <div className="grid h-full w-full place-items-center bg-slate-700">
                     <Avatar className="h-24 w-24">
-                      <AvatarFallback className="text-3xl">{participant.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback className="text-3xl">
+                        {participant.name.charAt(0)}
+                      </AvatarFallback>
                     </Avatar>
                   </div>
                 )
               ) : (
                 <div className="grid h-full w-full place-items-center bg-slate-700">
                   <Avatar className="h-24 w-24">
-                    <AvatarFallback className="text-3xl">{participant.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback className="text-3xl">
+                      {participant.name.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
                 </div>
               )}
 
               <div className="absolute bottom-2 left-2 rounded-md bg-black/50 px-2 py-1 text-sm text-white">
-                {participant.name} {participant.isLocal && "(You)"}
+                {participant.name} {participant.isLocal && '(You)'}
                 {!participant.isLocal && !isMicOn && <MicOff className="ml-1 inline h-3 w-3" />}
               </div>
             </Card>
@@ -180,12 +200,14 @@ export default function MeetingPage() {
                   variant="outline"
                   size="icon"
                   onClick={toggleMic}
-                  className={`rounded-full ${!isMicOn ? "bg-red-500 text-white hover:bg-red-600" : "bg-slate-800 text-white hover:bg-slate-700"}`}
+                  className={`rounded-full ${!isMicOn ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-slate-800 text-white hover:bg-slate-700'}`}
                 >
                   {isMicOn ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>{isMicOn ? "Turn off microphone" : "Turn on microphone"}</TooltipContent>
+              <TooltipContent>
+                {isMicOn ? 'Turn off microphone' : 'Turn on microphone'}
+              </TooltipContent>
             </Tooltip>
 
             <Tooltip>
@@ -194,12 +216,12 @@ export default function MeetingPage() {
                   variant="outline"
                   size="icon"
                   onClick={toggleVideo}
-                  className={`rounded-full ${!isVideoOn ? "bg-red-500 text-white hover:bg-red-600" : "bg-slate-800 text-white hover:bg-slate-700"}`}
+                  className={`rounded-full ${!isVideoOn ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-slate-800 text-white hover:bg-slate-700'}`}
                 >
                   {isVideoOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>{isVideoOn ? "Turn off camera" : "Turn on camera"}</TooltipContent>
+              <TooltipContent>{isVideoOn ? 'Turn off camera' : 'Turn on camera'}</TooltipContent>
             </Tooltip>
 
             <Tooltip>
@@ -233,5 +255,5 @@ export default function MeetingPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

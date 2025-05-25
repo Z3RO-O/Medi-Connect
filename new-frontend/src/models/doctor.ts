@@ -1,4 +1,4 @@
-import type { IAppointment } from './appointment'
+import type { IAppointment } from './appointment';
 
 export interface IDoctorAdmin {
   _id: string;

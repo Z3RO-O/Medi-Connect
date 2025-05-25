@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { CalendarIcon, Video } from "lucide-react"
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { CalendarIcon, Video } from 'lucide-react';
 
 export default function App() {
   return (
@@ -25,7 +25,9 @@ export default function App() {
       <main className="flex-1">
         <section className="container grid items-center gap-6 py-12 md:py-24 lg:grid-cols-2 lg:gap-12">
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">Video meetings for everyone</h1>
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+              Video meetings for everyone
+            </h1>
             <p className="text-muted-foreground md:text-xl">
               Secure, easy-to-use video calls with screen sharing and calendar integration.
             </p>
@@ -85,5 +87,5 @@ export default function App() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
