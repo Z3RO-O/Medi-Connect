@@ -1,12 +1,15 @@
 import { useContext, useEffect } from 'react'
-import { assets } from '../../../../assets/assets'
-import { AdminContext } from '../../../../context/AdminContext'
-import { AppContext } from '../../../../context/DoctorAppContext'
+
+import { assets } from '@/assets/assets'
+import { AdminContext } from '@/context/AdminContext'
+import { AppContext } from '@/context/DoctorAppContext'
+import type { IAdminContext, IDoctorAppContext } from '@/models/doctor'
+import type { IAppointment } from '@/models/appointment'
 
 const Dashboard = () => {
 
-  const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext)
-  const { slotDateFormat } = useContext(AppContext)
+  const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext) as IAdminContext
+  const { slotDateFormat } = useContext(AppContext) as IDoctorAppContext
 
   useEffect(() => {
     if (aToken) {
@@ -47,7 +50,7 @@ const Dashboard = () => {
         </div>
 
         <div className='pt-4 border border-t-0'>
-          {dashData.latestAppointments.slice(0, 5).map((item, index) => (
+          {dashData.latestAppointments.slice(0, 5).map((item: IAppointment, index: number) => (
             <div className='flex items-center px-6 py-3 gap-3 hover:bg-gray-100' key={index}>
               <img className='rounded-full w-10' src={item.docData.image} alt="" />
               <div className='flex-1 text-sm'>

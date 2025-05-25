@@ -1,13 +1,15 @@
 import { useContext } from 'react'
-import { assets } from '../../../assets/assets'
 import { NavLink } from 'react-router-dom'
-import { DoctorContext } from '../../../context/DoctorContext'
-import { AdminContext } from '../../../context/AdminContext'
+
+import { assets } from '@/assets/assets'
+import { DoctorContext } from '@/context/DoctorContext'
+import { AdminContext } from '@/context/AdminContext'
+import type { IDoctorContext, IAdminContext } from '@/models/doctor'
 
 const Sidebar = () => {
 
-  const { dToken } = useContext(DoctorContext)
-  const { aToken } = useContext(AdminContext)
+  const { dToken } = useContext(DoctorContext) as IDoctorContext
+  const { aToken } = useContext(AdminContext) as IAdminContext
 
   return (
     <div className='min-h-screen bg-white border-r'>

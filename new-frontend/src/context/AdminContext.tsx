@@ -1,19 +1,24 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import { toast } from "react-toastify";
+import type { ReactNode } from 'react';
 
+import type { IAdminContext } from '@/models/doctor'
 
-export const AdminContext = createContext({})
+export const AdminContext = createContext({} as IAdminContext)
 
-const AdminContextProvider = (props: any) => {
+interface AdminContextProviderProps {
+    children: ReactNode;
+}
+
+const AdminContextProvider = (props: AdminContextProviderProps) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-    const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '')
-
-    const [appointments, setAppointments] = useState([])
-    const [doctors, setDoctors] = useState([])
-    const [dashData, setDashData] = useState(false)
+    const [aToken, setAToken] = useState<string>(localStorage.getItem('aToken') ? localStorage.getItem('aToken') as string : '')
+    const [appointments, setAppointments] = useState<IAdminContext["appointments"]>([])
+    const [doctors, setDoctors] = useState<IAdminContext["doctors"]>([])
+    const [dashData, setDashData] = useState<IAdminContext["dashData"]>(null)
 
     // Getting all Doctors data from Database using API
     const getAllDoctors = async () => {
@@ -27,14 +32,18 @@ const AdminContextProvider = (props: any) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
 
     }
 
     // Function to change doctor availablity using API
-    const changeAvailability = async (docId) => {
+    const changeAvailability = async (docId: string) => {
         try {
 
             const { data } = await axios.post(backendUrl + '/api/admin/change-availability', { docId }, { headers: { aToken } })
@@ -45,9 +54,13 @@ const AdminContextProvider = (props: any) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
     }
 
@@ -64,15 +77,19 @@ const AdminContextProvider = (props: any) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
             console.log(error)
         }
 
     }
 
     // Function to cancel appointment using API
-    const cancelAppointment = async (appointmentId) => {
+    const cancelAppointment = async (appointmentId: string) => {
 
         try {
 
@@ -85,8 +102,12 @@ const AdminContextProvider = (props: any) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
             console.log(error)
         }
 
@@ -104,9 +125,13 @@ const AdminContextProvider = (props: any) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
 
     }

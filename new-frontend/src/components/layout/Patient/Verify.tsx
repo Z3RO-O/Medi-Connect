@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useContext, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { AppContext } from '../../../context/PatientAppContext';
+import { AppContext } from '@/context/PatientAppContext';
 import { toast } from 'react-toastify';
 
 const Verify = () => {

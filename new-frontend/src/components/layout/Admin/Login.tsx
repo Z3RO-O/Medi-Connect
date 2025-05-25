@@ -1,8 +1,11 @@
-import axios from 'axios'
 import { useContext, useState } from 'react'
-import { DoctorContext } from '../../../context/DoctorContext'
-import { AdminContext } from '../../../context/AdminContext'
+import axios from 'axios'
 import { toast } from 'react-toastify'
+
+import { DoctorContext } from '@/context/DoctorContext'
+import { AdminContext } from '@/context/AdminContext'
+import type { IDoctorContext } from '@/models/doctor'
+import type { IAdminContext } from '@/models/doctor'
 
 const Login = () => {
 
@@ -13,10 +16,10 @@ const Login = () => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-  const { setDToken } = useContext(DoctorContext)
-  const { setAToken } = useContext(AdminContext)
+  const { setDToken } = useContext(DoctorContext) as IDoctorContext
+  const { setAToken } = useContext(AdminContext) as IAdminContext
 
-  const onSubmitHandler = async (event) => {
+  const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (state === 'Admin') {

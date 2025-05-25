@@ -1,18 +1,24 @@
 import { createContext, useState } from "react";
+import type { ReactNode } from 'react';
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
+import type { IDoctorContext } from '@/models/doctor'
 
-export const DoctorContext = createContext({})
+export const DoctorContext = createContext({} as IDoctorContext)
 
-const DoctorContextProvider = (props) => {
+interface DoctorContextProviderProps {
+    children: ReactNode;
+}
+
+const DoctorContextProvider = (props: DoctorContextProviderProps) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-    const [dToken, setDToken] = useState(localStorage.getItem('dToken') ? localStorage.getItem('dToken') : '')
-    const [appointments, setAppointments] = useState([])
-    const [dashData, setDashData] = useState(false)
-    const [profileData, setProfileData] = useState(false)
+    const [dToken, setDToken] = useState<string>(localStorage.getItem('dToken') ? localStorage.getItem('dToken') as string : '')
+    const [appointments, setAppointments] = useState<IDoctorContext["appointments"]>([])
+    const [dashData, setDashData] = useState<IDoctorContext["dashData"]>(null)
+    const [profileData, setProfileData] = useState<unknown>(null)
 
     // Getting Doctor appointment data from Database using API
     const getAppointments = async () => {
@@ -26,9 +32,13 @@ const DoctorContextProvider = (props) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
     }
 
@@ -40,14 +50,18 @@ const DoctorContextProvider = (props) => {
             console.log(data.profileData)
             setProfileData(data.profileData)
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
     }
 
     // Function to cancel doctor appointment using API
-    const cancelAppointment = async (appointmentId) => {
+    const cancelAppointment = async (appointmentId: string) => {
 
         try {
 
@@ -62,15 +76,19 @@ const DoctorContextProvider = (props) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
             console.log(error)
         }
 
     }
 
     // Function to Mark appointment accepted using API
-    const completeAppointment = async (appointmentId) => {
+    const completeAppointment = async (appointmentId: string) => {
 
         try {
 
@@ -85,8 +103,12 @@ const DoctorContextProvider = (props) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
             console.log(error)
         }
 
@@ -104,14 +126,18 @@ const DoctorContextProvider = (props) => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
-            toast.error(error.message)
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
         }
 
     }
 
-    const value = {
+    const value: IDoctorContext = {
         dToken, setDToken, backendUrl,
         appointments,
         getAppointments,
@@ -127,7 +153,6 @@ const DoctorContextProvider = (props) => {
             {props.children}
         </DoctorContext.Provider>
     )
-
 
 }
 

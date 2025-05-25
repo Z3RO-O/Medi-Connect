@@ -1,9 +1,15 @@
 import { createContext } from "react";
+import type { ReactNode } from 'react';
 
+import type { IDoctorAppContext } from '@/models/doctor'
 
-export const AppContext = createContext({})
+export const AppContext = createContext({} as IDoctorAppContext)
 
-const AppContextProvider = (props: any) => {
+interface AppContextProviderProps {
+    children: ReactNode;
+}
+
+const AppContextProvider = (props: AppContextProviderProps) => {
 
     const currency = import.meta.env.VITE_CURRENCY
     const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -24,7 +30,7 @@ const AppContextProvider = (props: any) => {
         return age
     }
 
-    const value = {
+    const value: IDoctorAppContext = {
         backendUrl,
         currency,
         slotDateFormat,

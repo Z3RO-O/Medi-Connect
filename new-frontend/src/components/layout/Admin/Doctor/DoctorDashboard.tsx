@@ -1,13 +1,15 @@
-import { useContext } from 'react'
-import { useEffect } from 'react'
-import { DoctorContext } from '../../context/DoctorContext'
-import { assets } from '../../assets/assets'
-import { AppContext } from '../../context/AppContext'
+import { useContext, useEffect } from 'react'
+
+import { DoctorContext } from '@/context/DoctorContext'
+import { assets } from '@/assets/assets'
+import { AppContext } from '@/context/DoctorAppContext'
+import type { IDoctorContext, IDoctorAppContext } from '@/models/doctor'
+import type { IAppointment } from '@/models/appointment'
 
 const DoctorDashboard = () => {
 
-  const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(DoctorContext)
-  const { slotDateFormat, currency } = useContext(AppContext)
+  const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(DoctorContext) as IDoctorContext
+  const { slotDateFormat, currency } = useContext(AppContext) as IDoctorAppContext
 
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const DoctorDashboard = () => {
         </div>
 
         <div className='pt-4 border border-t-0'>
-          {dashData.latestAppointments.slice(0, 5).map((item, index) => (
+          {dashData.latestAppointments.slice(0, 5).map((item: IAppointment, index: number) => (
             <div className='flex items-center px-6 py-3 gap-3 hover:bg-gray-100' key={index}>
               <img className='rounded-full w-10' src={item.userData.image} alt="" />
               <div className='flex-1 text-sm'>

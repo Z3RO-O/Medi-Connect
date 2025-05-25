@@ -1,12 +1,15 @@
 import { useContext, useEffect } from 'react'
-import { DoctorContext } from '../../../../context/DoctorContext'
-import { AppContext } from '../../../../context/DoctorAppContext'
-import { assets } from '../../../../assets/assets'
+
+import { DoctorContext } from '@/context/DoctorContext'
+import { AppContext } from '@/context/DoctorAppContext'
+import { assets } from '@/assets/assets'
+import type { IDoctorContext, IDoctorAppContext } from '@/models/doctor'
+import type { IAppointment } from '@/models/appointment'
 
 const DoctorAppointments = () => {
 
-  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } = useContext(DoctorContext)
-  const { slotDateFormat, calculateAge, currency } = useContext(AppContext)
+  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } = useContext(DoctorContext) as IDoctorContext
+  const { slotDateFormat, calculateAge, currency } = useContext(AppContext) as IDoctorAppContext
 
   useEffect(() => {
     if (dToken) {
@@ -30,7 +33,7 @@ const DoctorAppointments = () => {
           <p>Fees</p>
           <p>Action</p>
         </div>
-        {appointments.map((item, index) => (
+        {appointments.map((item: IAppointment, index: number) => (
           <div className='flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_0.5fr_1fr_2fr_2fr_1fr_1fr] gap-1 items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50' key={index}>
             <p className='max-sm:hidden'>{index}</p>
             <div className='flex items-center gap-2'>

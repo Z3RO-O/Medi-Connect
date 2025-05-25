@@ -1,28 +1,30 @@
 import { useContext, useState } from 'react'
-import { assets } from '../../../../assets/assets'
-import { toast } from 'react-toastify'
 import axios from 'axios'
-import { AdminContext } from '../../../../context/AdminContext'
-import { AppContext } from '../../../../context/DoctorAppContext'
+import { toast } from 'react-toastify'
+
+import { assets } from '@/assets/assets'
+import { AdminContext } from '@/context/AdminContext'
+import { AppContext } from '@/context/DoctorAppContext'
+import type { IAdminContext, IDoctorAppContext } from '@/models/doctor'
 
 const AddDoctor = () => {
 
-    const [docImg, setDocImg] = useState(false)
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [experience, setExperience] = useState('1 Year')
-    const [fees, setFees] = useState('')
-    const [about, setAbout] = useState('')
-    const [speciality, setSpeciality] = useState('General physician')
-    const [degree, setDegree] = useState('')
-    const [address1, setAddress1] = useState('')
-    const [address2, setAddress2] = useState('')
+    const [docImg, setDocImg] = useState<File | null>(null)
+    const [name, setName] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [experience, setExperience] = useState<string>('1 Year')
+    const [fees, setFees] = useState<string>('')
+    const [about, setAbout] = useState<string>('')
+    const [speciality, setSpeciality] = useState<string>('General physician')
+    const [degree, setDegree] = useState<string>('')
+    const [address1, setAddress1] = useState<string>('')
+    const [address2, setAddress2] = useState<string>('')
 
-    const { backendUrl } = useContext(AppContext)
-    const { aToken } = useContext(AdminContext)
+    const { backendUrl } = useContext(AppContext) as IDoctorAppContext
+    const { aToken } = useContext(AdminContext) as IAdminContext
 
-    const onSubmitHandler = async (event) => {
+    const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
         try {
@@ -38,7 +40,7 @@ const AddDoctor = () => {
             formData.append('email', email)
             formData.append('password', password)
             formData.append('experience', experience)
-            formData.append('fees', Number(fees))
+            formData.append('fees', fees)
             formData.append('about', about)
             formData.append('speciality', speciality)
             formData.append('degree', degree)
@@ -52,7 +54,7 @@ const AddDoctor = () => {
             const { data } = await axios.post(backendUrl + '/api/admin/add-doctor', formData, { headers: { aToken } })
             if (data.success) {
                 toast.success(data.message)
-                setDocImg(false)
+                setDocImg(null)
                 setName('')
                 setPassword('')
                 setEmail('')
@@ -65,8 +67,12 @@ const AddDoctor = () => {
                 toast.error(data.message)
             }
 
-        } catch (error) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
+                toast.error((error as { message: string }).message)
+            } else {
+                toast.error('An error occurred')
+            }
             console.log(error)
         }
 
@@ -82,7 +88,11 @@ const AddDoctor = () => {
                     <label htmlFor="doc-img">
                         <img className='w-16 bg-gray-100 rounded-full cursor-pointer' src={docImg ? URL.createObjectURL(docImg) : assets.upload_area} alt="" />
                     </label>
-                    <input onChange={(e) => setDocImg(e.target.files[0])} type="file" name="" id="doc-img" hidden />
+                    <input onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                            setDocImg(e.target.files[0]);
+                        }
+                    }} type="file" name="" id="doc-img" hidden />
                     <p>Upload doctor <br /> picture</p>
                 </div>
 

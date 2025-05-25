@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react'
-import { AppContext } from '../../../context/PatientAppContext'
+import { AppContext } from '@/context/PatientAppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { assets } from '../../../assets/assets'
+import { assets } from '@/assets/assets'
 
 const MyProfile = () => {
 
