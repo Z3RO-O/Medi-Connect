@@ -11,7 +11,9 @@ const AllAppointments = () => {
   const { aToken, appointments, cancelAppointment, getAllAppointments } = useContext(
     AdminContext
   ) as IAdminContext;
-  const { slotDateFormat, calculateAge, currencySymbol } = useContext(AppContext) as IPatientAppContext;
+  const { slotDateFormat, calculateAge, currencySymbol } = useContext(
+    AppContext
+  ) as IPatientAppContext;
 
   useEffect(() => {
     if (aToken) {

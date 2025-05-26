@@ -100,10 +100,12 @@ const DoctorProfile = () => {
                   <textarea
                     onChange={(e) =>
                       setProfileData((prev) =>
-                        prev ? {
-                          ...prev,
-                          about: e.target.value
-                        } : null
+                        prev
+                          ? {
+                              ...prev,
+                              about: e.target.value
+                            }
+                          : null
                       )
                     }
                     className="w-full outline-primary p-2"
@@ -125,10 +127,12 @@ const DoctorProfile = () => {
                     type="number"
                     onChange={(e) =>
                       setProfileData((prev) =>
-                        prev ? {
-                          ...prev,
-                          fees: parseFloat(e.target.value)
-                        } : null
+                        prev
+                          ? {
+                              ...prev,
+                              fees: parseFloat(e.target.value)
+                            }
+                          : null
                       )
                     }
                     value={profileData.fees}
@@ -147,10 +151,12 @@ const DoctorProfile = () => {
                     type="text"
                     onChange={(e) =>
                       setProfileData((prev) =>
-                        prev ? {
-                          ...prev,
-                          address: { ...prev.address, line1: e.target.value }
-                        } : null
+                        prev
+                          ? {
+                              ...prev,
+                              address: { ...prev.address, line1: e.target.value }
+                            }
+                          : null
                       )
                     }
                     value={profileData.address.line1}
@@ -164,10 +170,12 @@ const DoctorProfile = () => {
                     type="text"
                     onChange={(e) =>
                       setProfileData((prev) =>
-                        prev ? {
-                          ...prev,
-                          address: { ...prev.address, line2: e.target.value }
-                        } : null
+                        prev
+                          ? {
+                              ...prev,
+                              address: { ...prev.address, line2: e.target.value }
+                            }
+                          : null
                       )
                     }
                     value={profileData.address.line2}
@@ -184,10 +192,12 @@ const DoctorProfile = () => {
                 onChange={() =>
                   isEdit &&
                   setProfileData((prev) =>
-                    prev ? {
-                      ...prev,
-                      available: !prev.available
-                    } : null
+                    prev
+                      ? {
+                          ...prev,
+                          available: !prev.available
+                        }
+                      : null
                   )
                 }
                 checked={profileData.available}

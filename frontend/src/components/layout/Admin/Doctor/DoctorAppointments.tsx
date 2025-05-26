@@ -10,7 +10,9 @@ import type { IAppointment } from '@/models/appointment';
 const DoctorAppointments = () => {
   const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } =
     useContext(DoctorContext) as IDoctorContext;
-  const { slotDateFormat, calculateAge, currencySymbol } = useContext(AppContext) as IPatientAppContext;
+  const { slotDateFormat, calculateAge, currencySymbol } = useContext(
+    AppContext
+  ) as IPatientAppContext;
 
   useEffect(() => {
     if (dToken) {

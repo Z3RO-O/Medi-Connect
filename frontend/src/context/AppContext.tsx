@@ -121,7 +121,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
     loadUserProfileData,
     currencySymbol,
     slotDateFormat,
-    calculateAge,
+    calculateAge
   };
 
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;
