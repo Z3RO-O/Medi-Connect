@@ -153,7 +153,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 
    ```bash
    cd backend
-   npm install
+   npm i
    npm run server
    ```
 
@@ -163,7 +163,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 
    ```bash
    cd frontend
-   npm install
+   npm i
    npm run dev
    ```
 
@@ -270,10 +270,6 @@ For pulse oximeter integration:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🆘 Support
 
