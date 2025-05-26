@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function MeetingPage() {
   const params = useParams();
@@ -14,7 +14,7 @@ export default function MeetingPage() {
   const meetingId = params.id as string;
   const userName = searchParams.get('name') || 'Guest';
 
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [participants, setParticipants] = useState([
