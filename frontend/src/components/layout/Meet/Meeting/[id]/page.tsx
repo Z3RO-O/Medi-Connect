@@ -17,7 +17,7 @@ export default function MeetingPage() {
   const isMobile = useIsMobile();
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
-  const [participants, setParticipants] = useState([
+  const [participants] = useState([
     { id: '1', name: userName, isLocal: true },
     { id: '2', name: 'Sarah Johnson', isLocal: false },
     { id: '3', name: 'Michael Chen', isLocal: false }
