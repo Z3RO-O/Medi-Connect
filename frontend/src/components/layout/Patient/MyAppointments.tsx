@@ -219,9 +219,27 @@ const MyAppointments = () => {
                 <span className="text-sm text-[#3C3C3C] font-medium">Date & Time:</span>{' '}
                 {slotDateFormat(item.slotDate)} | {item.slotTime}
               </p>
+              {item.meetingId && (
+                <p className="mt-1">
+                  <span className="text-sm text-[#3C3C3C] font-medium">Meeting ID:</span>{' '}
+                  <span className="text-sm text-blue-600 font-mono">{item.meetingId}</span>
+                </p>
+              )}
             </div>
             <div></div>
             <div className="flex flex-col gap-2 justify-end text-sm text-center">
+              {item.meetingId && (
+                <button 
+                  onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                  className="sm:min-w-48 py-2 border border-blue-500 rounded text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Join Meeting
+                </button>
+              )}
+              
               {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && (
                 <button
                   onClick={() => setPayment(item._id)}

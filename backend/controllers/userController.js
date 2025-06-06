@@ -128,6 +128,16 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// Function to generate unique meeting ID
+const generateMeetingId = () => {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < 10; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
+
 // API to book appointment
 const bookAppointment = async (req, res) => {
   try {
@@ -156,6 +166,9 @@ const bookAppointment = async (req, res) => {
 
     delete docData.slots_booked;
 
+    // Generate unique meeting ID
+    const meetingId = generateMeetingId();
+
     const appointmentData = {
       userId,
       docId,
@@ -165,6 +178,7 @@ const bookAppointment = async (req, res) => {
       slotTime,
       slotDate,
       date: Date.now(),
+      meetingId,
       vitals
     };
 
@@ -174,7 +188,7 @@ const bookAppointment = async (req, res) => {
     // save new slots data in docData
     await doctorModel.findByIdAndUpdate(docId, { slots_booked });
 
-    res.json({ success: true, message: 'Appointment Booked' });
+    res.json({ success: true, message: 'Appointment Booked', meetingId });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

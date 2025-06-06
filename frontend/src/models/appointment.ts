@@ -32,4 +32,5 @@ export interface IAppointment {
   cancelled?: boolean;
   isCompleted?: boolean;
   payment?: boolean;
+  meetingId: string;
 }

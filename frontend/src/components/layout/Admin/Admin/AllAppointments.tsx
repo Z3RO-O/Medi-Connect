@@ -115,14 +115,40 @@ const AllAppointments = () => {
             {item.cancelled ? (
               <p className="text-red-400 text-xs font-medium">Cancelled</p>
             ) : item.isCompleted ? (
-              <p className="text-green-500 text-xs font-medium">Accepted</p>
+              <div className="flex flex-col gap-1">
+                {item.meetingId && (
+                  <button 
+                    onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Join
+                  </button>
+                )}
+                <p className="text-green-500 text-xs font-medium">Accepted</p>
+              </div>
             ) : (
-              <img
-                onClick={() => cancelAppointment(item._id)}
-                className="w-10 cursor-pointer"
-                src={assets.cancel_icon}
-                alt=""
-              />
+              <div className="flex flex-col gap-1">
+                {item.meetingId && (
+                  <button 
+                    onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Join
+                  </button>
+                )}
+                <img
+                  onClick={() => cancelAppointment(item._id)}
+                  className="w-10 cursor-pointer"
+                  src={assets.cancel_icon}
+                  alt=""
+                />
+              </div>
             )}
           </div>
         ))}

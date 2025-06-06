@@ -109,7 +109,7 @@ const Appointment = () => {
         { headers: { token } }
       );
       if (data.success) {
-        toast.success(data.message);
+        toast.success(`${data.message}. Meeting ID: ${data.meetingId}`);
         getDoctosData();
         navigate('/my-appointments');
       } else {
