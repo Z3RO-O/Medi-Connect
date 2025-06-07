@@ -8,8 +8,15 @@ import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 
 const DoctorAppointments = () => {
-  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment, profileData, getProfileData } =
-    useContext(DoctorContext) as IDoctorContext;
+  const {
+    dToken,
+    appointments,
+    getAppointments,
+    cancelAppointment,
+    completeAppointment,
+    profileData,
+    getProfileData
+  } = useContext(DoctorContext) as IDoctorContext;
   const { slotDateFormat, calculateAge, currencySymbol } = useContext(
     AppContext
   ) as IPatientAppContext;
@@ -118,12 +125,28 @@ const DoctorAppointments = () => {
             ) : item.isCompleted ? (
               <div className="flex flex-col gap-1">
                 {item.meetingId && (
-                  <button 
-                    onClick={() => window.open(`/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`, '_blank')}
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`,
+                        '_blank'
+                      )
+                    }
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
                     </svg>
                     Join
                   </button>
@@ -133,12 +156,28 @@ const DoctorAppointments = () => {
             ) : (
               <div className="flex flex-col gap-1">
                 {item.meetingId && (
-                  <button 
-                    onClick={() => window.open(`/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`, '_blank')}
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`,
+                        '_blank'
+                      )
+                    }
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
                     </svg>
                     Join
                   </button>

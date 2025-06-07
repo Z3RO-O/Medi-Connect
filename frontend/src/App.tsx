@@ -42,24 +42,25 @@ const App = () => {
   const { dToken } = useContext(DoctorContext);
   const { aToken } = useContext(AdminContext);
   const location = useLocation();
-  
+
   // Check if current route is a meeting page or admin login
-  const isMeetingPage = location.pathname.startsWith('/meeting/') || 
-                       location.pathname === '/join' || 
-                       location.pathname === '/new';
-  
+  const isMeetingPage =
+    location.pathname.startsWith('/meeting/') ||
+    location.pathname === '/join' ||
+    location.pathname === '/new';
+
   const isAdminLoginPage = location.pathname === '/admin-login';
-  
+
   // Hide navbar and footer for meeting pages and admin login
   const hideNavbarAndFooter = isMeetingPage || isAdminLoginPage;
 
   if (aToken) {
     // Admin view
     return (
-      <div className={isMeetingPage ? "" : "bg-[#F8F9FD]"}>
+      <div className={isMeetingPage ? '' : 'bg-[#F8F9FD]'}>
         <ToastContainer />
         {!isMeetingPage && <AdminNavbar />}
-        <div className={isMeetingPage ? "" : "flex items-start"}>
+        <div className={isMeetingPage ? '' : 'flex items-start'}>
           {!isMeetingPage && <Sidebar />}
           <Routes>
             <Route path="/admin-login" element={<Navigate to="/admin-dashboard" />} />
@@ -79,10 +80,10 @@ const App = () => {
   if (dToken) {
     // Doctor view (using AdminNavbar/AdminSidebar)
     return (
-      <div className={isMeetingPage ? "" : "bg-[#F8F9FD]"}>
+      <div className={isMeetingPage ? '' : 'bg-[#F8F9FD]'}>
         <ToastContainer />
         {!isMeetingPage && <AdminNavbar />}
-        <div className={isMeetingPage ? "" : "flex items-start"}>
+        <div className={isMeetingPage ? '' : 'flex items-start'}>
           {!isMeetingPage && <Sidebar />}
           <Routes>
             <Route path="/admin-login" element={<Navigate to="/doctor-dashboard" />} />
@@ -100,9 +101,9 @@ const App = () => {
 
   // Patient view
   return (
-    <div className={hideNavbarAndFooter ? "" : "mx-4"}>
+    <div className={hideNavbarAndFooter ? '' : 'mx-4'}>
       {!hideNavbarAndFooter && <PatientNavbar />}
-      <div className={hideNavbarAndFooter ? "" : "sm:mx-[6%]"}>
+      <div className={hideNavbarAndFooter ? '' : 'sm:mx-[6%]'}>
         <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
