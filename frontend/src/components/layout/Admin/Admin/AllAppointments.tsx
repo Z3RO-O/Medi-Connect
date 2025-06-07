@@ -118,7 +118,7 @@ const AllAppointments = () => {
               <div className="flex flex-col gap-1">
                 {item.meetingId && (
                   <button 
-                    onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                    onClick={() => window.open(`/meeting/${item.meetingId}?name=Admin`, '_blank')}
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,7 +133,7 @@ const AllAppointments = () => {
               <div className="flex flex-col gap-1">
                 {item.meetingId && (
                   <button 
-                    onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                    onClick={() => window.open(`/meeting/${item.meetingId}?name=Admin`, '_blank')}
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

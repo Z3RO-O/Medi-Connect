@@ -8,7 +8,7 @@ import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 
 const DoctorAppointments = () => {
-  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } =
+  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment, profileData, getProfileData } =
     useContext(DoctorContext) as IDoctorContext;
   const { slotDateFormat, calculateAge, currencySymbol } = useContext(
     AppContext
@@ -17,6 +17,7 @@ const DoctorAppointments = () => {
   useEffect(() => {
     if (dToken) {
       getAppointments();
+      getProfileData();
     }
   }, [dToken]);
 
@@ -118,7 +119,7 @@ const DoctorAppointments = () => {
               <div className="flex flex-col gap-1">
                 {item.meetingId && (
                   <button 
-                    onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                    onClick={() => window.open(`/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`, '_blank')}
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,7 +134,7 @@ const DoctorAppointments = () => {
               <div className="flex flex-col gap-1">
                 {item.meetingId && (
                   <button 
-                    onClick={() => window.open(`/meeting/${item.meetingId}`, '_blank')}
+                    onClick={() => window.open(`/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`, '_blank')}
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
