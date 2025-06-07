@@ -6,6 +6,7 @@ import { DoctorContext } from '@/context/DoctorContext';
 import { AdminContext } from '@/context/AdminContext';
 import type { IDoctorContext } from '@/models/doctor';
 import type { IAdminContext } from '@/models/doctor';
+import { Button } from '@/components/ui/button';
 
 const Login = () => {
   const [state, setState] = useState('Admin');
@@ -66,7 +67,7 @@ const Login = () => {
             required
           />
         </div>
-        <button className="bg-primary text-white w-full py-2 rounded-md text-base">Login</button>
+        <Button className="bg-primary text-white w-full py-2 rounded-md text-base cursor-pointer">Login</Button>
         {state === 'Admin' ? (
           <p>
             Doctor Login?{' '}
