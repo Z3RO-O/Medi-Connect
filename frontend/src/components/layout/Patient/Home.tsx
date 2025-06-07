@@ -23,7 +23,7 @@ const Home = () => {
       {token && (
         <button
           onClick={() => navigate('/my-appointments')}
-          className="fixed bottom-6 right-6 bg-primary text-white p-4 rounded-full shadow-lg hover:bg-primary/90 transition-all duration-300 z-50 flex items-center gap-2"
+          className="fixed bottom-6 right-6 bg-primary text-white p-4 rounded-full shadow-lg hover:bg-primary/90 transition-all duration-300 z-50 flex items-center gap-2 cursor-pointer"
           title="My Appointments"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -449,18 +449,30 @@ export default function MeetingPage() {
           </div>
         )}
 
-        <div className="flex flex-1 flex-wrap content-center items-center justify-center gap-4 overflow-auto p-4">
-          {participants.map((participant) => (
-            <Card
-              key={participant.id}
-              className={`relative overflow-hidden ${
-                participants.length <= 2
-                  ? 'h-[60vh] w-[80%]'
-                  : isMobile
-                    ? 'h-[30vh] w-full'
-                    : 'h-[40vh] w-[45%]'
-              } bg-slate-800`}
-            >
+        <div className="flex-1 overflow-y-auto p-4 meeting-scroll">
+          <div 
+            className="grid gap-4 justify-items-center items-start content-start min-h-full"
+            style={{
+              gridTemplateColumns: participants.length <= 2 
+                ? isMobile ? '1fr' : 'repeat(auto-fit, minmax(500px, 1fr))'
+                : isMobile 
+                  ? '1fr'
+                  : participants.length <= 4
+                    ? 'repeat(2, 1fr)'
+                    : 'repeat(auto-fit, minmax(300px, 1fr))'
+            }}
+          >
+            {participants.map((participant) => (
+              <Card
+                key={participant.id}
+                className={`relative overflow-hidden w-full ${
+                  participants.length <= 2
+                    ? 'aspect-video max-h-[60vh] min-h-[300px]'
+                    : isMobile
+                      ? 'aspect-video max-h-[30vh] min-h-[200px]'
+                      : 'aspect-video max-h-[40vh] min-h-[250px]'
+                } bg-slate-800`}
+              >
               {participant.isLocal ? (
                 isVideoOn ? (
                   <video
@@ -504,6 +516,7 @@ export default function MeetingPage() {
               </div>
             </Card>
           ))}
+          </div>
         </div>
 
         <div className="flex justify-center gap-2 bg-slate-950 p-4">
