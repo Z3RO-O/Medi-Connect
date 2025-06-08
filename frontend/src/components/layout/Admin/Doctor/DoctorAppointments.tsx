@@ -22,6 +22,51 @@ const DoctorAppointments = () => {
     AppContext
   ) as IPatientAppContext;
 
+  // Function to check if appointment cannot be joined (too far in future or too far in past)
+  const getAppointmentJoinStatus = (slotDate: string, slotTime: string) => {
+    const dateArray = slotDate.split('_');
+    const day = parseInt(dateArray[0]);
+    const month = parseInt(dateArray[1]) - 1; // JavaScript months are 0-indexed
+    const year = parseInt(dateArray[2]);
+    
+    // Parse time (assuming format like "10:00 AM" or "2:30 PM")
+    const timeMatch = slotTime.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (!timeMatch) return { canJoin: false, reason: 'invalid' };
+    
+    let hours = parseInt(timeMatch[1]);
+    const minutes = parseInt(timeMatch[2]);
+    const period = timeMatch[3].toUpperCase();
+    
+    // Convert to 24-hour format
+    if (period === 'AM' && hours === 12) {
+      hours = 0;
+    } else if (period === 'PM' && hours !== 12) {
+      hours += 12;
+    }
+    
+    // Create appointment date
+    const appointmentDate = new Date(year, month, day, hours, minutes);
+    const now = new Date();
+    
+    // Calculate difference in milliseconds
+    const diffMs = appointmentDate.getTime() - now.getTime();
+    
+    // Convert to hours
+    const diffHours = diffMs / (60 * 60 * 1000);
+    
+    // Check if more than 24 hours in the future
+    if (diffHours > 24) {
+      return { canJoin: false, reason: 'future' };
+    }
+    
+    // Check if more than 2 hours in the past
+    if (diffHours < -2) {
+      return { canJoin: false, reason: 'past' };
+    }
+    
+    return { canJoin: true, reason: 'available' };
+  };
+
   useEffect(() => {
     if (dToken) {
       getAppointments();
@@ -125,38 +170,180 @@ const DoctorAppointments = () => {
               <p className="text-red-400 text-xs font-medium">Cancelled</p>
             ) : item.isCompleted ? (
               <div className="flex flex-col gap-1">
-                {item.meetingId && (
-                  <button
-                    onClick={() =>
-                      window.open(
-                        `/meeting/${item.meetingId}?name=${encodeURIComponent(profileData?.name || 'Doctor')}`,
-                        '_blank'
-                      )
+                {item.meetingId && (() => {
+                  const joinStatus = getAppointmentJoinStatus(item.slotDate, item.slotTime);
+                  const getTooltipMessage = () => {
+                    if (joinStatus.reason === 'future') {
+                      // Calculate when meeting becomes available (24 hours before appointment)
+                      const dateArray = item.slotDate.split('_');
+                      const day = parseInt(dateArray[0]);
+                      const month = parseInt(dateArray[1]) - 1;
+                      const year = parseInt(dateArray[2]);
+                      
+                      const timeMatch = item.slotTime.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+                      if (timeMatch) {
+                        let hours = parseInt(timeMatch[1]);
+                        const minutes = parseInt(timeMatch[2]);
+                        const period = timeMatch[3].toUpperCase();
+                        
+                        if (period === 'AM' && hours === 12) hours = 0;
+                        else if (period === 'PM' && hours !== 12) hours += 12;
+                        
+                        const appointmentDate = new Date(year, month, day, hours, minutes);
+                        const availableDate = new Date(appointmentDate.getTime() - (24 * 60 * 60 * 1000));
+                        
+                        // Format date as "11th June"
+                        const dayWithSuffix = (day: number) => {
+                          if (day > 3 && day < 21) return day + 'th';
+                          switch (day % 10) {
+                            case 1: return day + 'st';
+                            case 2: return day + 'nd';
+                            case 3: return day + 'rd';
+                            default: return day + 'th';
+                          }
+                        };
+                        
+                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                       'July', 'August', 'September', 'October', 'November', 'December'];
+                        
+                        const formattedDate = `${dayWithSuffix(availableDate.getDate())} ${months[availableDate.getMonth()]}`;
+                        const formattedTime = availableDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        
+                        return `Available from ${formattedDate} at ${formattedTime}`;
+                      }
+                      return 'Meeting will be available closer to appointment time';
+                    } else if (joinStatus.reason === 'past') {
+                      return 'This meeting is over';
                     }
-                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <Video className="w-3 h-3" />
-                    Join
-                  </button>
-                )}
+                    return 'Join the meeting';
+                  };
+
+                  const getButtonText = () => {
+                    if (joinStatus.reason === 'past') {
+                      return 'Over';
+                    } else if (joinStatus.reason === 'future') {
+                      return 'Soon';
+                    }
+                    return 'Join';
+                  };
+
+                  const getButtonStyles = () => {
+                    if (joinStatus.reason === 'past') {
+                      return 'bg-gray-300 text-gray-500 cursor-not-allowed';
+                    } else if (joinStatus.reason === 'future') {
+                      return 'bg-orange-200 text-orange-600 cursor-not-allowed';
+                    }
+                    return 'bg-blue-500 text-white hover:bg-blue-600 cursor-pointer';
+                  };
+
+                  return (
+                    <button
+                      onClick={() => {
+                        if (joinStatus.canJoin) {
+                          window.open(
+                            `/meeting/${item.meetingId}?name=${encodeURIComponent(profileData?.name || 'Doctor')}`,
+                            '_blank'
+                          );
+                        }
+                      }}
+                      disabled={!joinStatus.canJoin}
+                      className={`text-xs px-2 py-1 rounded transition-all duration-300 flex items-center justify-center gap-1 ${getButtonStyles()}`}
+                      title={getTooltipMessage()}
+                    >
+                      <Video className="w-3 h-3" />
+                      {getButtonText()}
+                    </button>
+                  );
+                })()}
                 <p className="text-green-500 text-xs font-medium">Accepted</p>
               </div>
             ) : (
               <div className="flex flex-col gap-1">
-                {item.meetingId && (
-                  <button
-                    onClick={() =>
-                      window.open(
-                        `/meeting/${item.meetingId}?name=${encodeURIComponent(profileData?.name || 'Doctor')}`,
-                        '_blank'
-                      )
+                {item.meetingId && (() => {
+                  const joinStatus = getAppointmentJoinStatus(item.slotDate, item.slotTime);
+                  const getTooltipMessage = () => {
+                    if (joinStatus.reason === 'future') {
+                      // Calculate when meeting becomes available (24 hours before appointment)
+                      const dateArray = item.slotDate.split('_');
+                      const day = parseInt(dateArray[0]);
+                      const month = parseInt(dateArray[1]) - 1;
+                      const year = parseInt(dateArray[2]);
+                      
+                      const timeMatch = item.slotTime.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+                      if (timeMatch) {
+                        let hours = parseInt(timeMatch[1]);
+                        const minutes = parseInt(timeMatch[2]);
+                        const period = timeMatch[3].toUpperCase();
+                        
+                        if (period === 'AM' && hours === 12) hours = 0;
+                        else if (period === 'PM' && hours !== 12) hours += 12;
+                        
+                        const appointmentDate = new Date(year, month, day, hours, minutes);
+                        const availableDate = new Date(appointmentDate.getTime() - (24 * 60 * 60 * 1000));
+                        
+                        // Format date as "11th June"
+                        const dayWithSuffix = (day: number) => {
+                          if (day > 3 && day < 21) return day + 'th';
+                          switch (day % 10) {
+                            case 1: return day + 'st';
+                            case 2: return day + 'nd';
+                            case 3: return day + 'rd';
+                            default: return day + 'th';
+                          }
+                        };
+                        
+                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                       'July', 'August', 'September', 'October', 'November', 'December'];
+                        
+                        const formattedDate = `${dayWithSuffix(availableDate.getDate())} ${months[availableDate.getMonth()]}`;
+                        const formattedTime = availableDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        
+                        return `Available from ${formattedDate} at ${formattedTime}`;
+                      }
+                      return 'Meeting will be available closer to appointment time';
+                    } else if (joinStatus.reason === 'past') {
+                      return 'This meeting is over';
                     }
-                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <Video className="w-3 h-3" />
-                    Join
-                  </button>
-                )}
+                    return 'Join the meeting';
+                  };
+
+                  const getButtonText = () => {
+                    if (joinStatus.reason === 'past') {
+                      return 'Over';
+                    } else if (joinStatus.reason === 'future') {
+                      return 'Soon';
+                    }
+                    return 'Join';
+                  };
+
+                  const getButtonStyles = () => {
+                    if (joinStatus.reason === 'past') {
+                      return 'bg-gray-300 text-gray-500 cursor-not-allowed';
+                    } else if (joinStatus.reason === 'future') {
+                      return 'bg-orange-200 text-orange-600 cursor-not-allowed';
+                    }
+                    return 'bg-blue-500 text-white hover:bg-blue-600 cursor-pointer';
+                  };
+
+                  return (
+                    <button
+                      onClick={() => {
+                        if (joinStatus.canJoin) {
+                          window.open(
+                            `/meeting/${item.meetingId}?name=${encodeURIComponent(profileData?.name || 'Doctor')}`,
+                            '_blank'
+                          );
+                        }
+                      }}
+                      disabled={!joinStatus.canJoin}
+                      className={`text-xs px-2 py-1 rounded transition-all duration-300 flex items-center justify-center gap-1 ${getButtonStyles()}`}
+                      title={getTooltipMessage()}
+                    >
+                      <Video className="w-3 h-3" />
+                      {getButtonText()}
+                    </button>
+                  );
+                })()}
                 <div className="flex">
                   <img
                     onClick={() => cancelAppointment(item._id)}
