@@ -73,14 +73,14 @@ const Navbar = () => {
         ) : (
           <button
             onClick={() => navigate('/login')}
-            className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
+            className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block cursor-pointer"
           >
             Create account
           </button>
         )}
         <img
           onClick={() => setShowMenu(true)}
-          className="w-6 md:hidden"
+          className="w-6 md:hidden cursor-pointer"
           src={assets.menu_icon}
           alt=""
         />
@@ -96,7 +96,7 @@ const Navbar = () => {
             <img
               onClick={() => setShowMenu(false)}
               src={assets.cross_icon}
-              className="w-7"
+              className="w-7 cursor-pointer"
               alt=""
             />
           </div>

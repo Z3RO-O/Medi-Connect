@@ -6,6 +6,7 @@ import { assets } from '@/assets/assets';
 import type { IDoctorContext } from '@/models/doctor';
 import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
+import { Video } from 'lucide-react';
 
 const DoctorAppointments = () => {
   const {
@@ -128,26 +129,13 @@ const DoctorAppointments = () => {
                   <button
                     onClick={() =>
                       window.open(
-                        `/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`,
+                        `/meeting/${item.meetingId}?name=${encodeURIComponent(profileData?.name || 'Doctor')}`,
                         '_blank'
                       )
                     }
-                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
+                    <Video className="w-3 h-3" />
                     Join
                   </button>
                 )}
@@ -159,26 +147,13 @@ const DoctorAppointments = () => {
                   <button
                     onClick={() =>
                       window.open(
-                        `/meeting/${item.meetingId}?name=${profileData?.name || 'Doctor'}`,
+                        `/meeting/${item.meetingId}?name=${encodeURIComponent(profileData?.name || 'Doctor')}`,
                         '_blank'
                       )
                     }
-                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
+                    <Video className="w-3 h-3" />
                     Join
                   </button>
                 )}

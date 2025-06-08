@@ -119,7 +119,7 @@ const AllAppointments = () => {
                 {item.meetingId && (
                   <button
                     onClick={() => window.open(`/meeting/${item.meetingId}?name=Admin`, '_blank')}
-                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +145,7 @@ const AllAppointments = () => {
                 {item.meetingId && (
                   <button
                     onClick={() => window.open(`/meeting/${item.meetingId}?name=Admin`, '_blank')}
-                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1"
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

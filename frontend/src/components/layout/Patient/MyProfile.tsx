@@ -193,14 +193,14 @@ const MyProfile = () => {
         {isEdit ? (
           <button
             onClick={updateUserProfileData}
-            className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
+            className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all cursor-pointer"
           >
             Save information
           </button>
         ) : (
           <button
             onClick={() => setIsEdit(true)}
-            className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
+            className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all cursor-pointer"
           >
             Edit
           </button>

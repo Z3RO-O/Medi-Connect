@@ -87,7 +87,7 @@ const Login = () => {
             required
           />
         </div>
-        <button className="bg-primary text-white w-full py-2 my-2 rounded-md text-base">
+        <button className="bg-primary text-white w-full py-2 my-2 rounded-md text-base cursor-pointer">
           {state === 'Sign Up' ? 'Create account' : 'Login'}
         </button>
         {state === 'Sign Up' ? (

@@ -31,7 +31,7 @@ const Doctors = () => {
       <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
         <button
           onClick={() => setShowFilter(!showFilter)}
-          className={`py-1 px-3 border rounded text-sm  transition-all sm:hidden ${showFilter ? 'bg-primary text-white' : ''}`}
+          className={`py-1 px-3 border rounded text-sm transition-all sm:hidden cursor-pointer ${showFilter ? 'bg-primary text-white' : ''}`}
         >
           Filters
         </button>

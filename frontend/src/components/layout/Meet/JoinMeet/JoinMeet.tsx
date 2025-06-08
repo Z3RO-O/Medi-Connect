@@ -23,7 +23,7 @@ export default function JoinMeetingPage() {
     <div className="container flex max-w-md flex-col items-center justify-center py-12">
       <Link
         to="/"
-        className="mb-8 flex items-center gap-2 self-start text-sm text-muted-foreground hover:text-foreground"
+        className="mb-8 flex items-center gap-2 self-start text-sm text-muted-foreground hover:text-foreground cursor-pointer"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Home

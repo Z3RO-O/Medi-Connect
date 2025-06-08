@@ -264,7 +264,7 @@ const MyAppointments = () => {
               {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && (
                 <button
                   onClick={() => appointmentStripe(item._id)}
-                  className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
+                  className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center cursor-pointer"
                 >
                   <img className="max-w-20 max-h-5" src={assets.stripe_logo} alt="" />
                 </button>
@@ -272,7 +272,7 @@ const MyAppointments = () => {
               {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && (
                 <button
                   onClick={() => appointmentRazorpay(item._id)}
-                  className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
+                  className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center cursor-pointer"
                 >
                   <img className="max-w-20 max-h-5" src={assets.razorpay_logo} alt="" />
                 </button>
