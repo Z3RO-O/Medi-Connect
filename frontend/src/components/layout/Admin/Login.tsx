@@ -7,6 +7,7 @@ import { AdminContext } from '@/context/AdminContext';
 import type { IDoctorContext } from '@/models/doctor';
 import type { IAdminContext } from '@/models/doctor';
 import { Button } from '@/components/ui/button';
+import { smartApi } from '@/utils/smartApi';
 
 const Login = () => {
   const [state, setState] = useState('Admin');
@@ -23,18 +24,22 @@ const Login = () => {
     event.preventDefault();
 
     if (state === 'Admin') {
-      const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password });
+      console.log('🏥 Admin Login: Using encrypted authentication');
+      const data = await smartApi.post('/api/admin/login', { email, password });
       if (data.success) {
         setAToken(data.token);
         localStorage.setItem('aToken', data.token);
+        console.log('✅ Admin logged in via Smart API');
       } else {
         toast.error(data.message);
       }
     } else {
-      const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password });
+      console.log('🩺 Doctor Login: Using encrypted authentication');
+      const data = await smartApi.post('/api/doctor/login', { email, password });
       if (data.success) {
         setDToken(data.token);
         localStorage.setItem('dToken', data.token);
+        console.log('✅ Doctor logged in via Smart API');
       } else {
         toast.error(data.message);
       }

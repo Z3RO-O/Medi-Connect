@@ -8,6 +8,7 @@ import { assets } from '@/assets/assets';
 import type { IPatientAppContext } from '@/models/patient';
 import type { IAppointment } from '@/models/appointment';
 import type { RazorpayOptions, RazorpayResponse } from '@/models/payment';
+import { smartApi } from '@/utils/smartApi';
 
 declare global {
   interface Window {
@@ -91,12 +92,15 @@ const MyAppointments = () => {
   // Getting User Appointments Data Using API
   const getUserAppointments = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/user/appointments', {
+      console.log('🏥 Medical: Fetching encrypted appointments list');
+      const data = await smartApi.get('/api/user/appointments', {
         headers: { token }
-      });
+      }) as { appointments: IAppointment[] };
+      
       setAppointments(data.appointments.reverse());
+      console.log('✅ Appointments loaded successfully via Smart API');
     } catch (error: unknown) {
-      console.log(error);
+      console.error('❌ Appointments loading error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -105,7 +109,7 @@ const MyAppointments = () => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while loading appointments');
       }
     }
   };
@@ -113,20 +117,21 @@ const MyAppointments = () => {
   // Function to cancel appointment Using API
   const cancelAppointment = async (appointmentId: string) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + '/api/user/cancel-appointment',
+      console.log('🏥 Medical: Attempting encrypted appointment cancellation');
+      const data = await smartApi.post('/api/user/cancel-appointment',
         { appointmentId },
         { headers: { token } }
-      );
+      ) as { success: boolean; message?: string };
 
       if (data.success) {
-        toast.success(data.message);
+        toast.success(data.message || 'Appointment cancelled successfully');
         getUserAppointments();
+        console.log('✅ Appointment cancelled successfully via Smart API');
       } else {
-        toast.error(data.message);
+        toast.error(data.message || 'Cancellation failed');
       }
     } catch (error: unknown) {
-      console.log(error);
+      console.error('❌ Appointment cancellation error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -135,7 +140,7 @@ const MyAppointments = () => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while cancelling appointment');
       }
     }
   };

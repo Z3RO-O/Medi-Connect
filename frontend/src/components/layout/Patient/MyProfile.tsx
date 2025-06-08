@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { assets } from '@/assets/assets';
 import { AppContext } from '@/context/AppContext';
 import type { IPatientAppContext, IUserData } from '@/models/patient';
+import { smartApi } from '@/utils/smartApi';
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -15,7 +16,7 @@ const MyProfile = () => {
     AppContext
   ) as IPatientAppContext;
 
-  // Function to update user profile data using API
+  // Function to update user profile data using API (NOW WITH SMART ENCRYPTION)
   const updateUserProfileData = async () => {
     try {
       const formData = new FormData();
@@ -28,7 +29,7 @@ const MyProfile = () => {
 
       if (image) formData.append('image', image);
 
-      const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, {
+      const data = await smartApi.post('/api/user/update-profile', formData, {
         headers: { token }
       });
 
@@ -37,6 +38,7 @@ const MyProfile = () => {
         await loadUserProfileData();
         setIsEdit(false);
         setImage(null);
+        console.log('✅ User profile updated via Smart API');
       } else {
         toast.error(data.message);
       }

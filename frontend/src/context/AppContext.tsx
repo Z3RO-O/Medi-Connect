@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { smartApi } from '@/utils/smartApi';
 
 export const AppContext = createContext({});
 
@@ -49,12 +50,14 @@ const AppContextProvider = (props: AppContextProviderProps) => {
   );
   const [userData, setUserData] = useState(false);
 
-  // Getting Doctors using API
+  // Getting Doctors using API (NOW WITH SMART ENCRYPTION)
   const getDoctosData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/doctor/list');
+      console.log('🏥 Public: Fetching encrypted doctors list');
+      const data = await smartApi.get('/api/doctor/list');
       if (data.success) {
         setDoctors(data.doctors);
+        console.log('✅ Doctors list loaded via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -73,15 +76,16 @@ const AppContextProvider = (props: AppContextProviderProps) => {
     }
   };
 
-  // Getting User Profile using API
+  // Getting User Profile using API (NOW WITH SMART ENCRYPTION)
   const loadUserProfileData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/user/get-profile', {
+      const data = await smartApi.get('/api/user/get-profile', {
         headers: { token }
       });
 
       if (data.success) {
         setUserData(data.userData);
+        console.log('✅ User profile loaded via Smart API');
       } else {
         toast.error(data.message);
       }

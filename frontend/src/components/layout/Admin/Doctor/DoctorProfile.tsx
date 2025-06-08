@@ -1,19 +1,82 @@
 import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { DoctorContext } from '@/context/DoctorContext';
 import { AppContext } from '@/context/AppContext';
 import type { IDoctorContext } from '@/models/doctor';
 import type { IPatientAppContext } from '@/models/patient';
+import { smartApi } from '@/utils/smartApi';
 
 const DoctorProfile = () => {
   const { dToken, profileData, setProfileData, getProfileData } = useContext(
     DoctorContext
   ) as IDoctorContext;
-  const { backendUrl } = useContext(AppContext) as IPatientAppContext;
   const { currencySymbol } = useContext(AppContext) as IPatientAppContext;
   const [isEdit, setIsEdit] = useState(false);
+
+  // Function to toggle availability immediately
+  const toggleAvailability = async () => {
+    if (!profileData) {
+      toast.error('Profile data not loaded.');
+      return;
+    }
+
+    try {
+      console.log('🔥 AVAILABILITY CHECKBOX CLICKED! Current state:', profileData.available);
+      
+      // Toggle the availability in local state immediately
+      const newAvailability = !profileData.available;
+      setProfileData((prev) =>
+        prev
+          ? {
+              ...prev,
+              available: newAvailability
+            }
+          : null
+      );
+
+      // Send update to server
+      const updateData = {
+        address: profileData.address,
+        fees: profileData.fees,
+        about: profileData.about,
+        available: newAvailability
+      };
+
+      console.log('🩺 Doctor Portal: Updating availability with encryption');
+      const data = await smartApi.post('/api/doctor/update-profile', updateData, {
+        headers: { dToken }
+      }) as { success: boolean; message?: string };
+
+      if (data.success) {
+        toast.success(`Availability ${newAvailability ? 'enabled' : 'disabled'}`);
+        console.log('✅ Doctor availability updated via Smart API');
+      } else {
+        toast.error(data.message || 'Availability update failed');
+        // Revert local state on failure
+        setProfileData((prev) =>
+          prev
+            ? {
+                ...prev,
+                available: !newAvailability
+              }
+            : null
+        );
+      }
+    } catch (error: unknown) {
+      console.error('❌ Doctor availability update error:', error);
+      // Revert local state on error
+      setProfileData((prev) =>
+        prev
+          ? {
+              ...prev,
+              available: !profileData.available
+            }
+          : null
+      );
+      toast.error('An error occurred while updating availability');
+    }
+  };
 
   const updateProfile = async () => {
     if (!profileData) {
@@ -29,20 +92,23 @@ const DoctorProfile = () => {
         available: profileData.available
       };
 
-      const { data } = await axios.post(backendUrl + '/api/doctor/update-profile', updateData, {
+      console.log('🩺 Doctor Portal: Attempting encrypted profile update');
+      const data = await smartApi.post('/api/doctor/update-profile', updateData, {
         headers: { dToken }
-      });
+      }) as { success: boolean; message?: string };
 
       if (data.success) {
-        toast.success(data.message);
+        toast.success(data.message || 'Profile updated successfully');
         setIsEdit(false);
         getProfileData();
+        console.log('✅ Doctor profile updated via Smart API');
       } else {
-        toast.error(data.message);
+        toast.error(data.message || 'Profile update failed');
       }
 
       setIsEdit(false);
     } catch (error: unknown) {
+      console.error('❌ Doctor profile update error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -51,9 +117,8 @@ const DoctorProfile = () => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while updating profile');
       }
-      console.log(error);
     }
   };
 
@@ -189,20 +254,11 @@ const DoctorProfile = () => {
             <div className="flex gap-1 pt-2">
               <input
                 type="checkbox"
-                onChange={() =>
-                  isEdit &&
-                  setProfileData((prev) =>
-                    prev
-                      ? {
-                          ...prev,
-                          available: !prev.available
-                        }
-                      : null
-                  )
-                }
+                onChange={toggleAvailability}
                 checked={profileData.available}
+                className="cursor-pointer"
               />
-              <label htmlFor="">Available</label>
+              <label htmlFor="" className="cursor-pointer">Available</label>
             </div>
 
             {isEdit ? (

@@ -19,6 +19,24 @@ const Home = () => {
       <TopDoctors />
       <Banner />
 
+      {/* Security Information Section */}
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            🔐 Your Data is Protected
+          </h2>
+          <p className="text-gray-600 mb-4">
+            All your medical data and communications are secured with military-grade encryption.
+          </p>
+          <button
+            onClick={() => navigate('/encryption-explained')}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Learn How Your Data is Protected
+          </button>
+        </div>
+      </div>
+
       {/* Floating Action Button for My Appointments */}
       {token && (
         <button

@@ -18,6 +18,7 @@ import Appointment from '@/components/layout/Patient/Appointment';
 import MyAppointments from '@/components/layout/Patient/MyAppointments';
 import MyProfile from '@/components/layout/Patient/MyProfile';
 import Verify from '@/components/layout/Patient/Verify';
+import EncryptionExplained from '@/components/layout/Patient/EncryptionExplained';
 
 // Meeting components
 import NewMeetingPage from '@/components/layout/Meet/NewMeet/NewMeet';
@@ -117,6 +118,7 @@ const App = () => {
           <Route path="/my-appointments" element={<MyAppointments />} />
           <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/encryption-explained" element={<EncryptionExplained />} />
           <Route path="/join" element={<JoinMeetingPage />} />
           <Route path="/new" element={<NewMeetingPage />} />
           <Route path="/meeting/:id" element={<MeetingPage />} />

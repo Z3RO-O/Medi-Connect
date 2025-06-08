@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import { AppContext } from '@/context/AppContext';
 import type { IPatientAppContext } from '@/models/patient';
+import { smartApi } from '@/utils/smartApi';
 
 const Login = () => {
   const [state, setState] = useState('Sign Up');
@@ -14,33 +14,42 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-  const { backendUrl, token, setToken } = useContext(AppContext) as IPatientAppContext;
+  const { token, setToken } = useContext(AppContext) as IPatientAppContext;
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (state === 'Sign Up') {
-      const { data } = await axios.post(backendUrl + '/api/user/register', {
-        name,
-        email,
-        password
-      });
+    try {
+      if (state === 'Sign Up') {
+        console.log('🔐 Authentication: Attempting encrypted registration');
+        const data = await smartApi.post('/api/user/register', {
+          name,
+          email,
+          password
+        }) as { success: boolean; token?: string; message?: string };
 
-      if (data.success) {
-        localStorage.setItem('token', data.token);
-        setToken(data.token);
+        if (data.success) {
+          localStorage.setItem('token', data.token!);
+          setToken(data.token!);
+          console.log('✅ Registration successful via Smart API');
+        } else {
+          toast.error(data.message || 'Registration failed');
+        }
       } else {
-        toast.error(data.message);
-      }
-    } else {
-      const { data } = await axios.post(backendUrl + '/api/user/login', { email, password });
+        console.log('🔐 Authentication: Attempting encrypted login');
+        const data = await smartApi.post('/api/user/login', { email, password }) as { success: boolean; token?: string; message?: string };
 
-      if (data.success) {
-        localStorage.setItem('token', data.token);
-        setToken(data.token);
-      } else {
-        toast.error(data.message);
+        if (data.success) {
+          localStorage.setItem('token', data.token!);
+          setToken(data.token!);
+          console.log('✅ Login successful via Smart API');
+        } else {
+          toast.error(data.message || 'Login failed');
+        }
       }
+    } catch (error) {
+      console.error('❌ Authentication error:', error);
+      toast.error('Authentication failed. Please try again.');
     }
   };
 

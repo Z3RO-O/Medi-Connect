@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import type { ReactNode } from 'react';
 
 import type { IAdminContext } from '@/models/doctor';
+import { smartApi } from '@/utils/smartApi';
 
 export const AdminContext = createContext({} as IAdminContext);
 
@@ -24,11 +25,13 @@ const AdminContextProvider = (props: AdminContextProviderProps) => {
   // Getting all Doctors data from Database using API
   const getAllDoctors = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/admin/all-doctors', {
+      console.log('🏥 Admin Portal: Fetching encrypted all-doctors');
+      const data = await smartApi.get('/api/admin/all-doctors', {
         headers: { aToken }
       });
       if (data.success) {
         setDoctors(data.doctors);
+        console.log('✅ All doctors loaded via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -46,17 +49,19 @@ const AdminContextProvider = (props: AdminContextProviderProps) => {
     }
   };
 
-  // Function to change doctor availablity using API
+  // Function to change doctor availablity using API (NOW WITH SMART ENCRYPTION)
   const changeAvailability = async (docId: string) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + '/api/admin/change-availability',
+      console.log('🔥 CHECKBOX CLICKED! Doctor ID:', docId);
+      console.log('🏥 Admin: Changing doctor availability with encryption');
+      const data = await smartApi.post('/api/admin/change-availability',
         { docId },
         { headers: { aToken } }
       );
       if (data.success) {
         toast.success(data.message);
         getAllDoctors();
+        console.log('✅ Doctor availability changed via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -78,11 +83,13 @@ const AdminContextProvider = (props: AdminContextProviderProps) => {
   // Getting all appointment data from Database using API
   const getAllAppointments = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/admin/appointments', {
+      console.log('🏥 Admin Portal: Fetching encrypted appointments');
+      const data = await smartApi.get('/api/admin/appointments', {
         headers: { aToken }
       });
       if (data.success) {
         setAppointments(data.appointments.reverse());
+        console.log('✅ All appointments loaded via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -101,11 +108,11 @@ const AdminContextProvider = (props: AdminContextProviderProps) => {
     }
   };
 
-  // Function to cancel appointment using API
+  // Function to cancel appointment using API (NOW WITH SMART ENCRYPTION)
   const cancelAppointment = async (appointmentId: string) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + '/api/admin/cancel-appointment',
+      console.log('🏥 Admin: Cancelling appointment with encryption');
+      const data = await smartApi.post('/api/admin/cancel-appointment',
         { appointmentId },
         { headers: { aToken } }
       );
@@ -113,6 +120,7 @@ const AdminContextProvider = (props: AdminContextProviderProps) => {
       if (data.success) {
         toast.success(data.message);
         getAllAppointments();
+        console.log('✅ Admin appointment cancelled via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -134,12 +142,14 @@ const AdminContextProvider = (props: AdminContextProviderProps) => {
   // Getting Admin Dashboard data from Database using API
   const getDashData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/admin/dashboard', {
+      console.log('🏥 Admin Portal: Fetching encrypted dashboard');
+      const data = await smartApi.get('/api/admin/dashboard', {
         headers: { aToken }
       });
 
       if (data.success) {
         setDashData(data.dashData);
+        console.log('✅ Admin dashboard loaded via Smart API');
       } else {
         toast.error(data.message);
       }

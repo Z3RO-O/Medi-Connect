@@ -8,6 +8,12 @@ const DoctorsList = () => {
     AdminContext
   ) as IAdminContext;
 
+  console.log('🔍 DoctorsList: Context values:', { 
+    doctorsCount: doctors?.length, 
+    hasChangeAvailability: !!changeAvailability,
+    hasToken: !!aToken 
+  });
+
   useEffect(() => {
     if (aToken) {
       getAllDoctors();
@@ -34,7 +40,10 @@ const DoctorsList = () => {
                 <p className="text-[#5C5C5C] text-sm">{item.speciality}</p>
                 <div className="mt-2 flex items-center gap-1 text-sm">
                   <input
-                    onChange={() => changeAvailability(item._id)}
+                    onChange={() => {
+                      console.log('🎯 CHECKBOX CLICKED for doctor:', item.name, 'ID:', item._id);
+                      changeAvailability(item._id);
+                    }}
                     type="checkbox"
                     checked={item.available}
                     className="cursor-pointer"

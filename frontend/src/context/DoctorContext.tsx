@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import type { IDoctorContext, DoctorProfile } from '@/models/doctor';
+import { smartApi } from '@/utils/smartApi';
 
 export const DoctorContext = createContext({} as IDoctorContext);
 
@@ -24,17 +25,19 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
   // Getting Doctor appointment data from Database using API
   const getAppointments = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/doctor/appointments', {
+      console.log('🩺 Doctor Portal: Fetching encrypted appointments');
+      const data = await smartApi.get('/api/doctor/appointments', {
         headers: { dToken }
-      });
+      }) as { success: boolean; appointments: IDoctorContext['appointments']; message?: string };
 
       if (data.success) {
         setAppointments(data.appointments.reverse());
+        console.log('✅ Doctor appointments loaded via Smart API');
       } else {
-        toast.error(data.message);
+        toast.error(data.message || 'Failed to load appointments');
       }
     } catch (error: unknown) {
-      console.log(error);
+      console.error('❌ Doctor appointments loading error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -43,7 +46,7 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while loading appointments');
       }
     }
   };
@@ -51,10 +54,15 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
   // Getting Doctor profile data from Database using API
   const getProfileData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/doctor/profile', { headers: { dToken } });
+      console.log('🩺 Doctor Portal: Fetching encrypted profile');
+      const data = await smartApi.get('/api/doctor/profile', { 
+        headers: { dToken } 
+      }) as { profileData: DoctorProfile };
+      
       setProfileData(data.profileData);
+      console.log('✅ Doctor profile loaded via Smart API');
     } catch (error: unknown) {
-      console.log(error);
+      console.error('❌ Doctor profile loading error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -63,16 +71,16 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while loading profile');
       }
     }
   };
 
-  // Function to cancel doctor appointment using API
+  // Function to cancel doctor appointment using API (NOW WITH SMART ENCRYPTION)
   const cancelAppointment = async (appointmentId: string) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + '/api/doctor/cancel-appointment',
+      console.log('🩺 Doctor: Cancelling appointment with encryption');
+      const data = await smartApi.post('/api/doctor/cancel-appointment', 
         { appointmentId },
         { headers: { dToken } }
       );
@@ -80,8 +88,8 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
       if (data.success) {
         toast.success(data.message);
         getAppointments();
-        // after creating dashboard
         getDashData();
+        console.log('✅ Appointment cancelled via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -100,11 +108,11 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
     }
   };
 
-  // Function to Mark appointment accepted using API
+  // Function to Mark appointment accepted using API (NOW WITH SMART ENCRYPTION)
   const completeAppointment = async (appointmentId: string) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + '/api/doctor/complete-appointment',
+      console.log('🩺 Doctor: Completing appointment with encryption');
+      const data = await smartApi.post('/api/doctor/complete-appointment',
         { appointmentId },
         { headers: { dToken } }
       );
@@ -112,8 +120,8 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
       if (data.success) {
         toast.success(data.message);
         getAppointments();
-        // Later after creating getDashData Function
         getDashData();
+        console.log('✅ Appointment completed via Smart API');
       } else {
         toast.error(data.message);
       }
@@ -135,17 +143,19 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
   // Getting Doctor dashboard data using API
   const getDashData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/doctor/dashboard', {
+      console.log('🩺 Doctor Portal: Fetching encrypted dashboard data');
+      const data = await smartApi.get('/api/doctor/dashboard', {
         headers: { dToken }
-      });
+      }) as { success: boolean; dashData: IDoctorContext['dashData']; message?: string };
 
       if (data.success) {
         setDashData(data.dashData);
+        console.log('✅ Doctor dashboard loaded via Smart API');
       } else {
-        toast.error(data.message);
+        toast.error(data.message || 'Failed to load dashboard');
       }
     } catch (error: unknown) {
-      console.log(error);
+      console.error('❌ Doctor dashboard loading error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -154,7 +164,7 @@ const DoctorContextProvider = (props: DoctorContextProviderProps) => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while loading dashboard');
       }
     }
   };

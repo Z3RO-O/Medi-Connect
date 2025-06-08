@@ -7,6 +7,7 @@ import { AppContext } from '@/context/AppContext';
 import { assets } from '@/assets/assets';
 import RelatedDoctors from '@/components/layout/Patient/general/RelatedDoctors';
 import type { IPatientAppContext, IDoctorPatient } from '@/models/patient';
+import { smartApi } from '@/utils/smartApi';
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -34,12 +35,19 @@ const Appointment = () => {
 
   const fetchVitals = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/vitals/latest');
+      console.log('💓 Medical: Fetching encrypted vitals data');
+      const data = await smartApi.get('/api/vitals/latest') as { 
+        success: boolean; 
+        bpm: string; 
+        spo2: string; 
+      };
+      
       if (data.success) {
         setVitals({
           bpm: data.bpm,
           spo2: data.spo2
         });
+        console.log('✅ Vitals data fetched via Smart API');
       }
     } catch (error: unknown) {
       console.log('Error fetching vitals:', error);
@@ -103,20 +111,22 @@ const Appointment = () => {
     const year = date.getFullYear();
     const slotDate = day + '_' + month + '_' + year;
     try {
-      const { data } = await axios.post(
-        backendUrl + '/api/user/book-appointment',
+      console.log('🏥 Medical: Attempting encrypted appointment booking');
+      const data = await smartApi.post('/api/user/book-appointment', 
         { docId, slotDate, slotTime, vitals },
         { headers: { token } }
-      );
+      ) as { success: boolean; message?: string; meetingId?: string };
+
       if (data.success) {
         toast.success(`${data.message}. Meeting ID: ${data.meetingId}`);
         getDoctosData();
         navigate('/my-appointments');
+        console.log('✅ Appointment booked successfully via Smart API');
       } else {
-        toast.error(data.message);
+        toast.error(data.message || 'Booking failed');
       }
     } catch (error: unknown) {
-      console.log(error);
+      console.error('❌ Appointment booking error:', error);
       if (
         error &&
         typeof error === 'object' &&
@@ -125,7 +135,7 @@ const Appointment = () => {
       ) {
         toast.error((error as { message: string }).message);
       } else {
-        toast.error('An error occurred');
+        toast.error('An error occurred while booking appointment');
       }
     }
   };

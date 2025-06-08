@@ -8,6 +8,8 @@ import connectCloudinary from './config/cloudinary.js';
 import userRouter from './routes/userRoute.js';
 import doctorRouter from './routes/doctorRoute.js';
 import adminRouter from './routes/adminRoute.js';
+import secureRouter from './routes/secureRoute.js';
+import { optionalDecryptRequest, optionalEncryptResponse } from './middleware/hybridCrypto.js';
 
 // app config
 const app = express();
@@ -30,7 +32,7 @@ let latestRealVitals = null;
 let lastUpdatedTime = Date.now();
 
 // Toggle mock data on/off
-const MOCK_ENABLED = false; // set to true to enable mock data
+const MOCK_ENABLED = true; // set to true to enable mock data
 
 // Generate realistic looking vital signs
 const generateRealisticVitals = () => {
@@ -54,6 +56,7 @@ const generateRealisticVitals = () => {
 app.use('/api/user', userRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/doctor', doctorRouter);
+app.use('/api/secure', secureRouter);
 
 app.get('/', (req, res) => {
   res.send('API Working');
@@ -78,8 +81,8 @@ app.post('/data', (req, res) => {
   }
 });
 
-// Endpoint to get the latest vitals
-app.get('/api/vitals/latest', (req, res) => {
+// Endpoint to get the latest vitals (with encryption support)
+app.get('/api/vitals/latest', optionalDecryptRequest, (req, res, next) => {
   let vitals;
   if (MOCK_ENABLED) {
     vitals = generateRealisticVitals();
@@ -89,7 +92,20 @@ app.get('/api/vitals/latest', (req, res) => {
     return res.status(404).json({ success: false, message: 'No vitals data available' });
   }
   res.json({ success: true, ...vitals });
-});
+}, optionalEncryptResponse);
+
+// Support POST for encrypted requests
+app.post('/api/vitals/latest', optionalDecryptRequest, (req, res, next) => {
+  let vitals;
+  if (MOCK_ENABLED) {
+    vitals = generateRealisticVitals();
+  } else if (latestRealVitals) {
+    vitals = latestRealVitals;
+  } else {
+    return res.status(404).json({ success: false, message: 'No vitals data available' });
+  }
+  res.json({ success: true, ...vitals });
+}, optionalEncryptResponse);
 
 // Socket.IO for real-time meeting functionality
 const activeRooms = new Map(); // Store active meeting rooms

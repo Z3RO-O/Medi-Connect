@@ -14,16 +14,27 @@ import {
 } from '../controllers/userController.js';
 import upload from '../middleware/multer.js';
 import authUser from '../middleware/authUser.js';
+import { hybridCrypto } from '../middleware/hybridCrypto.js';
 const userRouter = express.Router();
 
-userRouter.post('/register', registerUser);
-userRouter.post('/login', loginUser);
+// STEP 3: Enable encryption for authentication endpoints
+userRouter.post('/register', hybridCrypto, registerUser);
+userRouter.post('/login', hybridCrypto, loginUser);
 
-userRouter.get('/get-profile', authUser, getProfile);
-userRouter.post('/update-profile', upload.single('image'), authUser, updateProfile);
-userRouter.post('/book-appointment', authUser, bookAppointment);
-userRouter.get('/appointments', authUser, listAppointment);
-userRouter.post('/cancel-appointment', authUser, cancelAppointment);
+// Support both GET (regular) and POST (encrypted) for get-profile
+userRouter.get('/get-profile', hybridCrypto, authUser, getProfile);
+userRouter.post('/get-profile', hybridCrypto, authUser, getProfile);
+
+// Support both GET (for encrypted fallback) and POST (main method) for update-profile
+userRouter.get('/update-profile', hybridCrypto, upload.single('image'), authUser, updateProfile);
+userRouter.post('/update-profile', hybridCrypto, upload.single('image'), authUser, updateProfile);
+
+// STEP 4: Enable encryption for medical appointment endpoints
+userRouter.post('/book-appointment', hybridCrypto, authUser, bookAppointment);
+userRouter.get('/appointments', hybridCrypto, authUser, listAppointment);
+userRouter.post('/appointments', hybridCrypto, authUser, listAppointment);
+userRouter.post('/cancel-appointment', hybridCrypto, authUser, cancelAppointment);
+
 userRouter.post('/payment-razorpay', authUser, paymentRazorpay);
 userRouter.post('/verifyRazorpay', authUser, verifyRazorpay);
 userRouter.post('/payment-stripe', authUser, paymentStripe);
