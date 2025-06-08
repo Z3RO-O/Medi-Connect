@@ -158,7 +158,7 @@ const Appointment = () => {
       {/* ---------- Doctor and Patient Details ----------- */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div>
-          <img className="bg-primary w-full sm:max-w-72 rounded-lg" src={docInfo.image} alt="" />
+          <img className="doctor-profile-image w-full sm:max-w-72 rounded-lg" src={docInfo.image} alt={`Dr. ${docInfo.name}`} />
         </div>
         <div className="flex flex-col flex-1 gap-3">
           <div className="border border-[#ADADAD] rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0">

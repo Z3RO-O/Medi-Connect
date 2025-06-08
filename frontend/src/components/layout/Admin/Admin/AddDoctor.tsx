@@ -90,9 +90,9 @@ const AddDoctor = () => {
         <div className="flex items-center gap-4 mb-8 text-gray-500">
           <label htmlFor="doc-img">
             <img
-              className="w-16 bg-gray-100 rounded-full cursor-pointer"
+              className="w-16 h-16 bg-gray-100 rounded-full cursor-pointer object-cover"
               src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
-              alt=""
+              alt="Doctor preview"
             />
           </label>
           <input
@@ -243,7 +243,7 @@ const AddDoctor = () => {
           ></textarea>
         </div>
 
-        <button type="submit" className="bg-primary px-10 py-3 mt-4 text-white rounded-full">
+        <button type="submit" className="bg-primary px-10 py-3 mt-4 text-white rounded-full cursor-pointer">
           Add doctor
         </button>
       </div>

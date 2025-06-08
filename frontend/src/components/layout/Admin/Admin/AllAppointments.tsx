@@ -43,7 +43,7 @@ const AllAppointments = () => {
           >
             <p className="max-sm:hidden">{index + 1}</p>
             <div className="flex items-center gap-2">
-              <img src={item.userData.image} className="w-8 rounded-full" alt="" />{' '}
+              <img src={item.userData.image} className="w-8 h-8 rounded-full object-cover" alt={item.userData.name} />
               <p>{item.userData.name}</p>
             </div>
             <p className="max-sm:hidden">{calculateAge(item.userData.dob)}</p>
@@ -51,7 +51,7 @@ const AllAppointments = () => {
               {slotDateFormat(item.slotDate)}, {item.slotTime}
             </p>
             <div className="flex items-center gap-2">
-              <img src={item.docData.image} className="w-8 rounded-full bg-gray-200" alt="" />{' '}
+              <img src={item.docData.image} className="w-8 h-8 rounded-full object-cover bg-gray-200" alt={`Dr. ${item.docData.name}`} />
               <p>{item.docData.name}</p>
             </div>
             <div className="py-1">

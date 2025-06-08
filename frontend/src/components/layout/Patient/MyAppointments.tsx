@@ -207,7 +207,7 @@ const MyAppointments = () => {
             className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b"
           >
             <div>
-              <img className="w-36 bg-[#EAEFFF]" src={item.docData.image} alt="" />
+              <img className="doctor-profile-image w-36 h-48 rounded" src={item.docData.image} alt={`Dr. ${item.docData.name}`} />
             </div>
             <div className="flex-1 text-sm text-[#5E5E5E]">
               <p className="text-[#262626] text-base font-semibold">{item.docData.name}</p>

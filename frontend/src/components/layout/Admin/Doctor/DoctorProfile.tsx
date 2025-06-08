@@ -69,9 +69,9 @@ const DoctorProfile = () => {
         <div className="flex flex-col gap-4 m-5">
           <div>
             <img
-              className="bg-primary/80 w-full sm:max-w-64 rounded-lg"
+              className="doctor-profile-image w-full sm:max-w-64 rounded-lg"
               src={profileData.image}
-              alt=""
+              alt={`Dr. ${profileData.name}`}
             />
           </div>
 

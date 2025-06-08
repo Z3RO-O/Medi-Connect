@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { AppContext } from '@/context/AppContext';
+import DoctorCard from '@/components/common/DoctorCard';
+import EmptyState from '@/components/common/EmptyState';
 import type { IPatientAppContext, IDoctorPatient } from '@/models/patient';
 
 const Doctors = () => {
@@ -97,31 +99,23 @@ const Doctors = () => {
             Gastroenterologist
           </p>
         </div>
-        <div className="w-full grid grid-cols-auto gap-4 gap-y-6">
-          {filterDoc.map((item: IDoctorPatient, index: number) => (
-            <div
-              onClick={() => {
-                navigate(`/appointment/${item._id}`);
-                scrollTo(0, 0);
-              }}
-              className="border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
-              key={index}
-            >
-              <img className="bg-[#EAEFFF]" src={item.image} alt="" />
-              <div className="p-4">
-                <div
-                  className={`flex items-center gap-2 text-sm text-center ${item.available ? 'text-green-500' : 'text-gray-500'}`}
-                >
-                  <p
-                    className={`w-2 h-2 rounded-full ${item.available ? 'bg-green-500' : 'bg-gray-500'}`}
-                  ></p>
-                  <p>{item.available ? 'Available' : 'Not Available'}</p>
-                </div>
-                <p className="text-[#262626] text-lg font-medium">{item.name}</p>
-                <p className="text-[#5C5C5C] text-sm">{item.speciality}</p>
-              </div>
-            </div>
-          ))}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
+          {filterDoc.length > 0 ? (
+            filterDoc.map((item: IDoctorPatient, index: number) => (
+              <DoctorCard key={index} doctor={item} />
+            ))
+          ) : (
+            <EmptyState
+              title="No doctors found"
+              description={
+                speciality 
+                  ? `Sorry, we couldn't find any ${speciality.toLowerCase()}s available at the moment.` 
+                  : "No doctors are currently available. Please try again later."
+              }
+              actionLabel="Browse All Doctors"
+              onAction={() => navigate('/doctors')}
+            />
+          )}
         </div>
       </div>
     </div>

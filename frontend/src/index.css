@@ -162,3 +162,40 @@
   scrollbar-width: thin;
   scrollbar-color: #475569 #1e293b;
 }
+
+/* Custom image display utilities */
+@layer utilities {
+  .image-container {
+    @apply flex items-center justify-center;
+  }
+  
+  .doctor-card-image {
+    @apply bg-gradient-to-br from-blue-50 to-blue-100 object-contain;
+  }
+  
+  .profile-image {
+    @apply object-cover;
+  }
+  
+  .doctor-profile-image {
+    @apply bg-gradient-to-br from-blue-50 to-blue-100 object-contain;
+  }
+}
+
+/* Improved image loading states */
+img[loading="lazy"] {
+  transition: opacity 0.3s ease-in-out;
+}
+
+img[loading="lazy"]:not([src]) {
+  opacity: 0;
+}
+
+/* Better aspect ratio handling */
+.aspect-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.aspect-doctor-card {
+  aspect-ratio: 1 / 1.2;
+}

@@ -61,12 +61,12 @@ const MyProfile = () => {
         <label htmlFor="image">
           <div className="inline-block relative cursor-pointer">
             <img
-              className="w-36 rounded opacity-75"
+              className="profile-image w-36 h-36 rounded opacity-75"
               src={image ? URL.createObjectURL(image) : userData.image}
-              alt=""
+              alt="Profile"
             />
             <img
-              className="w-10 absolute bottom-12 right-12"
+              className="w-10 absolute bottom-2 right-2"
               src={!image ? assets.upload_icon : ''}
               alt=""
             />
@@ -83,7 +83,7 @@ const MyProfile = () => {
           />
         </label>
       ) : (
-        <img className="w-36 rounded" src={userData.image} alt="" />
+        <img className="profile-image w-36 h-36 rounded" src={userData.image} alt="Profile" />
       )}
 
       {isEdit ? (
